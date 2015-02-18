@@ -12,7 +12,6 @@ Liens Utiles
 
 > https://github.com/LSDev8/     
 > http://lsdev8.github.io/     
-> http://lsdev8.github.io/PSAR-Kilobot/     
 > lsdev8@googlegroups.com     
 > http://www.eecs.harvard.edu/ssr/projects/progSA/kilobot.html     
 
