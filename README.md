@@ -4,8 +4,8 @@ PSAR-Kilobot
 Participants
 ------------
 
-> Arnaud GUERMONT (Jackamer)
-> Benjamin BIELLE (sbksba)
+> Arnaud GUERMONT (Jackamer)     
+> Benjamin BIELLE (sbksba)     
 
 Liens Utiles
 ------------
