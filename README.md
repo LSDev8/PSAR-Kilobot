@@ -14,6 +14,7 @@ Liens Utiles
 > http://lsdev8.github.io/     
 > lsdev8@googlegroups.com     
 > http://www.eecs.harvard.edu/ssr/projects/progSA/kilobot.html     
+> https://www.kilobotics.com/
 
 Licence
 -------
