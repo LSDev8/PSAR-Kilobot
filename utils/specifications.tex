@@ -1,0 +1,157 @@
+\documentclass[a4paper,8pt]{report}
+
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+
+\usepackage[left=2cm]{geometry}
+\usepackage{amsmath,amssymb,mathrsfs}
+\usepackage{graphicx}
+\usepackage[table,xcdraw]{xcolor}
+
+\usepackage{enumerate}
+
+%Utilisation des codes sources en C
+\usepackage{listings}
+\lstset{
+  language=C,
+  language=Bash,
+  basicstyle=\footnotesize,
+  numbers=left,
+  numberstyle=\normalsize,
+  numbersep=7pt,
+}
+
+\title{{\LARGE Kilobot \\ Cahier des charges}}
+\author{GUERMONT Arnaud, BIELLE Benjamin}
+
+\begin{document}
+
+\maketitle
+\renewcommand{\contentsname}{Sommaire}
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                %
+%                          INTRODUCTION                          %
+%                                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Introduction}
+
+\noindent \textbf{Maitrise d'oeuvre :} DUBOIS Swan.\\
+\noindent \textbf{Maitrise d'ouvrage :} GUERMONT Arnaud, BIELLE Benjamin.\\
+
+\section*{Contexte}\label{sec:name}
+\addcontentsline{toc}{section}{Contexte}
+
+\textbf{Kilobot} est une plate-forme constitu\'ee de petits robots autonomes. Cette plate-forme est propos\'ee par l'universit\'e d'Harvard\footnote{http://www.eecs.harvard.edu/ssr/projects/progSA/kilobot.html}. \\
+Ces robots se d\'eplacent uniquement par vibration et communiquent par infrarouges.\\
+
+\smallskip
+Le but de ce projet est d'impl\'ementer une \textbf{API} permettant de manipuler des mod\`eles robotiques sur la plate-forme Kilobot. Ces mod\`eles ne sont pas pr\'evus pour la plate-forme Kilobot, notre API devra rendre cette impl\'ementation possible en restant simple et si possible facilement extensible.\\
+
+\section*{L'existant}\label{sec:name}
+\addcontentsline{toc}{section}{L'existant}
+
+Il existe deux API de base pour la plate-forme Kilobot.\\
+
+\begin{itemize}
+\item \textit{\textbf{K-team}}\footnote{http://www.k-team.com/mobile-robotics-products/kilobot}.
+\item \textit{\textbf{Kilobotics}}\footnote{https://www.kilobotics.com/}.
+\end{itemize}
+
+\medskip
+Celle propos\'ee par \textit{\textbf{K-team}} (fournie par d\'efaut avec les robots) nous permet une moins grande libert\'e que celle de \textit{\textbf{Kilobotics}}.\\
+Donc notre \textit{\textbf{API}} se basera sur celle-ci car elle nous garantie une plus grande libert\'e, portabilit\'e et extensibilit\'e.
+
+\section*{Veille Technologique}\label{sec:name}
+\addcontentsline{toc}{section}{Veille Technologique}
+
+Il existe plusieurs projets similaires aux kilobots, par exemple le projet \textit{\textbf{I-Swarm}}\footnote{http://www.hizook.com/blog/2009/08/29/i-swarm-micro-robots-realized-impressive-full-system-integration}, mais seul la plate-forme \textit{\textbf{Kilobot}} permet de manipuler des centaines de robots de mani\`ere r\'ealiste hors d'un simulateur.\\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                %
+%                           LE PRODUIT                           %
+%                                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Le Produit}
+
+\section*{Description des attentes}\label{sec:name}
+\addcontentsline{toc}{section}{Description des attentes}
+
+Le but de ce projet est de prendre en main la plate-forme Kilobot (l'API et les robots) puis de cr\'eer une API manipulant un autre type de mod\`ele robotique.\\
+
+\smallskip
+L'objectif de cette API est de retransmettre un mod\`ele robotique (compl\`etement diff\'erent des kilobots) sur cette plate-forme, afin de faciliter la mise en place d'algorithmes sur ce mod\`ele.\\
+
+\smallskip
+L'API doit fonctionner sur tous les types de syst\`emes (\textit{Windows}, \textit{OSX}, \textit{Linux}) et doit \^etre extensible afin de facilit\'e l'ajout de futures fonctionnalit\'ees.\\
+
+\section*{Fonctions de l'API}\label{sec:name}
+\addcontentsline{toc}{section}{Fonctions de l'API}
+
+\textit{A COMPLETER}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                %
+%                          CONTRAINTES                           %
+%                                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Contraintes}
+
+\section*{Mat\'erielles}\label{sec:name}
+\addcontentsline{toc}{section}{Mat\'erielles}
+
+Contrairement au mod\`ele que notre API doit impl\'ementer, les kilobots ne peuvent pas se voir au sens propre, ils ne peuvent communiquer qu'\`a sept centim\`etre atour d'eux.
+
+\section*{Logicielles}\label{sec:name}
+\addcontentsline{toc}{section}{Logicielles}
+
+La plate-forme fournie par d\'efaut avec les kilobots n'est pas protable sur \textit{OSX} et \textit{Linux}.\\
+Donc cela nous force \`a remplacer cette API par celle de Harvard (\textit{\textbf{Kilobotics}}) permettant de r\'egler ce probl\`eme de portabilit\'e.
+
+\section*{de temps}\label{sec:name}
+\addcontentsline{toc}{section}{de temps}
+
+\textit{A COMPLETER}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                %
+%                          ORGANISATION                          %
+%                                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{D\'eroulement du projet}
+
+Ce projet se d\'ecoupe en 3 phases.\\
+
+\begin{enumerate}[{Phase}-I ]
+\item \textit{\textbf{Recherche Documentaire et Prise en main}}.
+\item \textit{\textbf{Recherche d'un bio-algorithme et d\'eveloppement}}.
+\item \textit{\textbf{Impl\'ementation d'un modele de robot avec les kilobots}}.
+\end{enumerate}
+
+\medskip
+\section*{Organisation}\label{sec:name}
+\addcontentsline{toc}{section}{Organisation}
+
+\textit{A COMPLETER}
+
+\section*{Mat\'eriel Utilis\'e}\label{sec:name}
+\addcontentsline{toc}{section}{Mat\'eriel Utilis\'e}
+
+Le mat\'eriel se compose des kilobots, de transmetteur et d'un PC quelqu'il soit.
+
+\section*{Logiciel Utilis\'e}\label{sec:name}
+\addcontentsline{toc}{section}{Logiciel Utilis\'e}
+
+Nous utiliserons les logiciels fournis pour l'API Kilobotics pour le d\'eveloppement de notre API, notre gestionnaire de version sera Github.\\
+Le projet sera h\'eberg\'e sous l'organisation \textit{\textbf{LSDev8}}\footnote{https://github.com/LSDev8/}.\\
+Nous ferons nos simulations sous le logiciel \textit{\textbf{V-Rep}}\footnote{http://www.coppeliarobotics.com} afin de valider de mani\`ere plus rapide nos algorithmes.\\
+
+\section*{Cas d'utilisation}\label{sec:name}
+\addcontentsline{toc}{section}{Cas d'utilisation}
+
+\textit{A COMPLETER}
+
+\end{document}
