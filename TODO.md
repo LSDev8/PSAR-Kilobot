@@ -22,7 +22,7 @@ Recherche Documentaire et Prise en main (PHASE 1)
 Recherche d'un bio-algorithme et developpement (PHASE 2)
 --------------------------------------------------------
 
-- [ ] Recherche bio-algorithme et creation de celui-ci
+- [ ] Recherche bio-algorithme et creation de celui-ci (algorithme de light tracking)
 - [ ] Developpement en simulation et test de l'algorithme
 - [ ] Test sur les kilobots de cet algorithme
 
