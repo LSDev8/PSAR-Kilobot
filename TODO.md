@@ -16,7 +16,7 @@ Recherche Documentaire et Prise en main (PHASE 1)
 - [ ] Implémentation sous AVRstudio de l'algorithme d'orbiting
 - [ ] Test réel avec les kilobots de l'algorithme d'orbiting
 - [ ] Implémentation sous AVRstudio de l'algorithme de synchronisation (firefly)
-- [ ] Test réel avec les kilobots de l'algorithme de synchronisation (firefly)
+- [x] Test réel avec les kilobots de l'algorithme de synchronisation (firefly)
 
 
 Recherche d'un bio-algorithme et developpement (PHASE 2)
