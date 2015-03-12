@@ -102,16 +102,107 @@ L'API doit fonctionner sur tous les types de syst\`emes (\textit{Windows}, \text
 \section*{Mat\'erielles}\label{sec:name}
 \addcontentsline{toc}{section}{Mat\'erielles}
 
-Contrairement au mod\`ele que notre API doit impl\'ementer, les kilobots ne peuvent pas se voir au sens propre, ils ne peuvent communiquer qu'\`a sept centim\`etre atour d'eux.
+Le but du mod\`ele est de repr\'esenter une grande quantit\'e de robot (presque un essaim) pour pouvoir effectuer des t\^aches collectives qui seraient impossible \`a r\'ealiser en solitaire. De nombreux exemples dans la nature mette en action ce principe : les fourmis peuvent explorer des zones d'un p\'erim\`etres de plusieurs kilom\`etres par exemple. \\
+Dans la robotique, il existe des algorithmes divers telle-que l'auto-assemblage, les constructions collectives ou encore l'exploration. 
+Ces algorithmes sont fait pour \^etre test\'e sur plusieurs centaines voir milliers d'individus. Cependant, pour des raisons de co\^uts, de temps ou encore de complexit\'e, il est parfois uniquement possible de les valid\'es en simulation. \\
+C'est pourquoi un mod\`ele comme celui que les kilobots impl\'emente fut cr\'ee. Les robots devaient avoir plusieurs capacit\'es : communiquer et percevoir leur environnement par l'interm\'ediaire de capteurs, conna\^itre la distance entre eux et se d\'eplacer en avant, tourner sur la gauche et sur la droite. De plus, ils devaient aussi pouvoir tous \^etre contr\^ol\'e ensemble simultan\'ement par un seul op\'erateur. Mais la principale contrainte restait le co\^ut. En effet, il \'etait tr\`es dur auparavant de tester des algorithmes sur des essaims de robots qui co\^utait plusieurs centaines de dollars \`a l'unit\'e.
+
+\subsection*{Communication et perception de l'environnement}\label{subsec:name}
+\addcontentsline{toc}{subsection}{Communication et perception de l'environnement}
+
+De nombreux algorithmes collectifs utilise la communication entre robots et la distance entre ces m\^eme robots pour piloter individuellement le comportement de chaque robot. Il est donc indispensable que les kilobots puissent communiquer entre eux ainsi que mesurer la distance qui les s\'epares l'un de l'autre. \\
+Pour qu'ils puissent communiquer, chaque kilobot est pourvus d'une led pour transmettre et d'une photodiode infrarouge comme r\'ecepteur qui sont tous les deux plac\'es en-dessous au centre du robot. En \'etant plac\'e au centre, le r\'ecepteur peut recevoir des messages d'une \'egale distance dans toutes les directions. Les messages sont envoy\'es par la led et utilisent la r\'eflexion du support sur lequel ils \'evoluent pour transmettre (c'est pourquoi le support doit \^etre r\'efl\'echissant comme un tableau blanc ou un miroir par exemple). En utilisant cette technique, un kilobot peut transmettre dans un rayon de 7 centim\`etres \`a un d\'ebit de 30 kb/s. La m\'ethode d'acc\`es CSMA/CA est utilis\'es pour \'eviter les collisions (tous les robots \'emettent sur le m\^eme canal).
+Une led RGB est aussi situ\'e sur le c\^ot\'e pour pouvoir informer l'utilisateur.
+
+\smallskip
+Les kilobots sont aussi pourvus d'un capteur de lumi\`ere permettant de mesurer l'intensit\'e lumineuse de l'environnement du robot.
+
+\subsection*{Mesure de la distance}\label{subsec:name}
+\addcontentsline{toc}{subsection}{Mesure de la distance}
+
+Le calcul de la distance entre un robot et un autre se fait via l'envoi et la r\'eception du message. L'intensit\'e de la lumi\`ere \'emise par la led diminue proportionnellement avec la distance qu'elle parcours. Ils ne restent alors plus qu'au r\'ecepteur \`a calculer la distance en fonction de l'intensit\'e du signal reçu. Comme le signal peut \^etre affect\'e par l'environnement, la pr\'ecision est de +/- 2 mm.
+
+\subsection*{D\'eplacement}\label{subsec:name}
+\addcontentsline{toc}{subsection}{D\'eplacement}
+
+L'une des principales capacit\'es des robots est de pouvoir se mouvoir dans leur environnement. L'une des solutions les plus simples et efficace est d'utiliser un design \`a deux roues, chaque roue \'etant contr\^ol\'e par un moteur. Mais cette solution est aussi tr\`es ch\`ere et ne permettra pas de r\'ealiser un robot \`a bas co\^uts. \\
+Pour y rem\'edier, les kilobots disposent de trois jambes rigides et de deux moteurs \`a vibration dispos\'e de chaque c\^ot\'es du robot. Lorsqu'un des moteurs est activ\'es, il g\'en\`ere une force centrip\`ete qui est convertis en une force vers l'avant transmise \`a la jambe situ\'e en dessous du moteur. Gr\^ace au positionnement d\'ecentr\'e de chaque moteur, la mise en marche de l'un ou l'autre va causer une rotation vers la gauche ou la droite en fonction du moteur. En activant les deux moteurs en m\^eme temps et en contr\^olant la magnitude de leur vibration, ils est alors possible de faire avancer le robot en ligne droite vers l'avant. Il peut ainsi se d\'eplacer \`a une vitesse d'environs 1 cm/s et pivoter \`a environs 45°/s.
+
+\subsection*{Contr\^ole des robots par l'op\'erateur}\label{subsec:name}
+\addcontentsline{toc}{subsection}{Contr\^ole des robots par l'op\'erateur}
+
+Lorsqu'on utilise un tr\`es grand nombre de robots, le chargement de leur programme, leur mise en marche ou encore le rechargement de leur alimentation peut vite prendre beaucoup de temps pour l'utilisateur : \'Emettons l'hypoth\`ese qu'il faille 3 secondes pour allumer un robot via un interrupteur. Pour un groupe de 1000 robots, cela prendrais au total 50 minutes, ce qui est bien trop long pour \^etre efficace. \\
+Les kilobots sont donc conçus pour \^etre utilis\'e \`a grande \'echelle par une seule personne. 
+
+\smallskip
+La communication entre l'op\'erateur et les robots passent par un contr\^oleur. Le contr\^oleur est une plate-forme disposant d'une connexion usb pour interagir avec l'ordinateur de l'utilisateur et de multiples led pour envoyer des messages aux kilobots. Chaque kilobot dispose sur son dos d'un r\'ecepteur pour la r\'eception des signaux. Le contr\^oleur est l'interface entre l'op\'erateur et l'essaim de robot. Dispos\'e \`a une auteur d'un m\`etre, il couvre un p\'erim\`etre d'un m\`etre. Il permet d'effectuer multiples op\'eration comme la mise en veille, le r\'eveil, le chargement d'un nouveau programme ou encore l'arr\^et du programme en cours d'ex\'ecution. Il est aussi utilis\'e pour la calibration des moteurs des kilobots.
+
+\smallskip
+Le probl\`eme \'evoqu\'e auparavant aurait aussi pu s'appliquer aux kilobots. Pour y rem\'edier, les robots disposent d'un mode veille. Le microcontr\^oleur peut d\'esactiver le r\'egulateurs de tension pour les moteurs et aussi celui pour le syst\`eme de communication (led et r\'ecepteur). Il ne reste plus que celui pour le microcontr\^oleur principale. Dans cet \'etat de veille, le microcontr\^oleur va tester toutes les minutes pendant 10 ms si il a reçu un message de r\'eveil. Si c'est le cas, il r\'ealimente alors les r\'egulateurs de tension et le robot redevient de nouveau op\'erationnel. Ce mode veille permet \`a un kilobot d'avoir une autonomie de 3 mois. Mettre en veille un groupe ne prend que quelque seconde et le r\'eveil s'effectue en moins d'une minute. Les kilobots disposent aussi d'un interrupteur coupant toute alimentation du robot si ces derniers venait \`a ne pas \^etre utilis\'es pendant une longue p\'eriode.
+
+\smallskip
+Le rechargement de l'alimentation des robots est aussi un facteur de temps. Les kilobots disposent d'une batterie au lithium-ion de 3.4 V 160 mAh. Elle leurs assurent une autonomie entre 3 et 24 heures selon l'usage qui en est fait. Le rechargement de celle-ci est aussi adapt\'e \`a la manipulation d'un grand nombre de robot. Pour cela, les kilobots utilisent deux de leurs trois jambes comme conducteur : L'utilisateur place les jambes des robots en contact avec un courant \'electrique de 6V via une plaque m\'etallique ou un tube m\'etallique et connecte le crochet situ\'e sur le dessus du robot \`a la masse. Cela permet le rechargement de plusieurs kilobots simultan\'ement sans intervention sur le robot. Par exemple, l'utilisation d'une plaque m\'etallique comme chargeur et d'une autre plaque qui viendrait se poser au dessus des kilobots est une solution abordable et adaptable \`a tr\`es grande \'echelle. Lorsque le chargement est termin\'e, la led RGB des kilobots en informe l'utilisateur.
+
+\smallskip
+Le chargement d'un programme s'effectue via le contr\^oleur. Lorsque l'op\'erateur souhaite charger un nouveau programme, il envoi un message au kilobots pour qu'ils placent leur pointeur de programme dans le bootloader. Ce dernier dispose d'un programme qui va alors recevoir le nouveau programme de l'utilisateur et le placer dans la m\'emoire primaire. Le bootloader va ensuite v\'erifier que ce programme ne dispose pas d'erreur puis ensuite red\'emarrer le kilobots qui va alors ex\'ecuter le nouveau programme. Cette m\'ethode permet de programmer un essaim de robot en environs 35 secondes. 
+
+\subsection*{Co\^uts}\label{subsec:name}
+\addcontentsline{toc}{subsection}{Co\^uts}
+
+La principale contrainte lorsqu'on impl\'emente un mod\`ele \`a large \'echelle est le co\^uts. En effet, les robots actuelles d\'epasse les centaines de dollars \`a l'unit\'e et ne sont donc pas envisageable. \\
+Les kilobots ont \'et\'e conçus dans le but de ne pas \^etre ch\`ere \`a construire. Le co\^ut \`a l'unit\'e pour 1000 robots est de 14 dollars, ce qui est environs dix fois moins que les autres robots conçus pour les algorithmes collectifs. \\
+Pour cela, les robots disposent d'un moyen de locomotion par vibration comme vu auparavant et sont constitu\'e de pi\`ece simple et peut co\^uteuse : \\
+
+\noindent D\'eplacement : 3,12 \$ \\
+Alimentation : 3,61 \$ \\
+Communication/Capteur : 2,20 \$ \\
+Contr\^oleur : 2,83 \$ \\
+Structure : 1,55 \$ \\
+Divers : 0,74 \$ \\
+Total : 14,05 \$ \\
+
+L'assemblage des robots est aussi tr\`es simple et rapide (la plus part des composants sont mont\'es \`a la  surface du PCB) et peuvent \^etre r\'ealis\'e par un robot pour un co\^ut d'environs 5 \$ par robot (pour 1000 robots). Cela prend donc environs 5 minutes pour obtenir un robot fonctionnel \`a partir des composants.
 
 \section*{Logicielles}\label{sec:name}
 \addcontentsline{toc}{section}{Logicielles}
 
-La plate-forme fournie par d\'efaut avec les kilobots n'est pas protable sur \textit{OSX} et \textit{Linux}.\\
-Donc cela nous force \`a remplacer cette API par celle de Harvard (\textit{\textbf{Kilobotics}}) permettant de r\'egler ce probl\`eme de portabilit\'e.
+\subsection*{Simulation}\label{subsec:name}
+\addcontentsline{toc}{subsection}{Simulation}
+
+Lorsqu'on impl\'emente des algorithmes collectifs, on d\'esire parfois les simuler avant de pouvoir les tester grandeur nature sur les robots (ici les kilobots) afin d'\'eviter les erreurs d'impl\'ementation ou de se retrouver avec un programme qui impl\'emente mal l'algorithme. \\
+Pour cela, nous avons \`a notre disposition le simulateur V-Rep de la soci\'et\'e Coppelia Robotics qui est un simulateur sp\'ecialis\'e dans le domaine de la robotique. Il impl\'emente des mod\`eles 3d de l'ensemble des robots existants et il int\`egre aussi un cr\'eateur de mod\`ele 3d afin de pouvoir simuler des prototypes. Il dispose aussi d'un moteur physique permettant de v\'erifier la viabilit\'e de certains robots. Il utilise un langage de script (le Lua) pour programmer les robots et ainsi les faire \'evoluer dans l'environnement simul\'e. Il peut aussi \^etre coupl\'e avec de nombreuses interfaces via des API remotes.
+
+\smallskip
+Le mod\`ele 3d des kilobots fut impl\'ement\'es par la K-Team dans le simulateur et permet la simulation de l'ensemble des fonctionnalit\'es des robots. Il existe deux impl\'ementations : avec et sans capteur de lumi\`ere. En effet, la simulation du capteur de lumi\`ere n\'ecessite des calculs suppl\'ementaires et allonge la dur\'ee de la simulation. Il n'est donc pas utile qu'il soit utiliser si l'algorithme n'en n'a pas besoin. \\
+Le contr\^oleur est aussi simul\'e dans V-Rep via son propre mod\`ele 3d. Il permet de lancer le programme, arr\^eter le programme en cours et aussi de connaître le niveau de batterie simul\'e. \\
+L'ensemble de l'API de la K-Team est impl\'ement\'e dans le simulateur via un squelette de code inclus dans chaque script associ\'e \`a un objet kilobot.
+
+\smallskip
+Malheureusement, le simulateur V-Rep ne r\'epond pas \`a nos besoins pour la simulation d'algorithme collectif sur les kilobots. Plusieurs probl\`eme furent rencontr\'es : \\ 
+
+\smallskip
+Le langage utilis\'e pour les script est le Lua. Bien que tr\`es similaire au langage C, il nous oblige \`a retranscrire chaque programme en Lua. De plus, le fichier contenant le script en lua est incorpor\'e dans le fichier contenant la sc\`ene du simulateur (la sc\`ene comprend les mod\`ele de robot simul\'e, l'environnement ainsi que l'ensemble des scripts). C'est \`a la fois un avantage (partage d'une simulation tr\`es facile : tout est regroup\'e dans un seul fichier) et un inconv\'enient (oblig\'e de partager l'ensemble de la sc\`ene pour pouvoir travailler en groupe et ne pas pouvoir travailler sur le script sans installer ou ex\'ecuter le simulateur).
+
+\smallskip
+Le simulateur dispose lors de la simulation de plusieurs vitesse de simulation. Il est alors utile de pouvoir acc\'el\'erer le temps pour voir si l'impl\'ementation de l'algorithme est robuste et stable. Sauf que l'augmentation de la vitesse de simulation engendre des bugs dans le d\'eroulement des scripts et ne permet pas de s'assurer du bon fonctionnement d'un programme de mani\`ere fiable. 
+
+\smallskip
+Enfin, V-Rep est un simulateur orient\'e m\'ecanique. Il dispose en effet d'un moteur physique et d'un environnement en 3 dimensions pour pouvoir simuler des robots complexes comme des bras robotiques. Nous l'utilisons pour effectuer des simulations d'algorithmes, donc comme un simulateur logique. Il n'est alors pas adapt\'e \`a nos besoins (trop lourd, langage de script trop contraignant, nombreux bug durant la simulation).
+
+\subsection*{Firmware}\label{subsec:name}
+\addcontentsline{toc}{subsection}{Firmware}
+
+Les kilobots sont un mod\`ele de robot d\'evelopp\'es par l'universit\'e d'Harvard. L'entreprise suisse K-Team Corporation les proposes \`a la vente et s'occupe de la fabrication et de l'assemblage. Ils fournissent les robots avec leur propre firmware d\'evelopp\'e en interne par la K-Team. \\
+Ce firmware poss\`ede un inconv\'enient : il n'est compatible uniquement sous windows. \\
+En effet, pour que l'op\'erateur puisse charger le programme dans les kilobots, il doit passer par le contr\^oleur qui est l'interface entre l'ordinateur et les robots. Or, le driver du contr\^oleur est uniquement disponible pour Windows et la K-Team ne fournit pas les sources pour un portage sous Linux. \\
+De plus, nous avons rencontr\'es des probl\`emes lors de la calibration des moteurs avec le firmware d'origine. Ce dernier ne permet la calibration uniquement du moteur gauche ou du moteur droit mais pas des deux lorsqu'on souhaite avancer. Or, le positionnement des jambes de chaque kilobot n'\'etant pas parfaitement identique, nous avons besoin de valeurs diff\'erentes pour les deux moteur afin que le robot se d\'eplace en ligne droite.
+
+\smallskip
+Apr\`es recherche, nous d\'ecid\^ames d'utiliser le firmware kilobotics. Kilobotics est le nom de la librairie d\'evelopp\'e par l'universit\'e d'Harvard. Il est open-source et est plus r\'ecent et dispose d'un driver pour Linux. De plus, son utilisation limite les risques pour le mat\'erielle. Le contr\^oleur permet de charger les programmes dans les kilobots. Mais pour effectuer cela avec le firmware d'origine de la K-Team, il faut \`a chaque nouveau programme reprogrammer le microcontr\^oleur du contr\^oleur, ce qui implique le risque de se retrouver avec un microcontr\^oleur mal programmer et alors un contr\^oleur potentiellement hs. Le firmware kilobotics n\'ecessite lui de ne le reprogrammer qu'une seule fois, ce qui limite grandement les risques. \\
+En ce qui concerne la calibration, kilobotic permet via l'interface graphique (kilogui) de calibrer chaque moteur s\'epar\'ement mais aussi de leur attribuer des valeurs diff\'erentes pour le d\'eplacement en ligne droite. Kilogui propose aussi la possibilit\'e de rentrer directement les valeurs souhait\'es (entre 1 et 255) pour la puissance des moteurs. Enfin, il est possible d'affecter un identifiant \`a chaque robot qui sera stock\'e dans la m\'emoire EPROM.
 
 \section*{de temps}\label{sec:name}
-\addcontentsline{toc}{section}{de temps}
+\addcontentsline{toc}{section}{De temps}
 
 \textit{A COMPLETER}
 
