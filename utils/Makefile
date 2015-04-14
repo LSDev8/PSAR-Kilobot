@@ -8,7 +8,7 @@
 
 #*******************************************************************************
 # Document base name that we want to build
-DOC = specifications
+DOC = specificationsII
 
 #*******************************************************************************
 # Directory where are stored all used images .eps and .png format
