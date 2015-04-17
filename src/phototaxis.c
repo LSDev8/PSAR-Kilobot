@@ -59,24 +59,19 @@ void loop()
 {
   lightTrack();
   
-  switch(currentDir)
+  /* RIGHT */
+  if (currentLight > HI_BARRIER)
     {
-    case RIGHT:
-      if (currentLight > HI_BARRIER)
-	{
-	  currentDir = RIGHT;
-	  turnRight();
-	}
-      break;
-
-    case LEFT:
-      if (currentLight < LO_BARRIER)
-	{
-	  currentDir = LEFT;
-	  turnLeft();
-	}
-      break;
+      currentDir = RIGHT;
+      turnRight();
     }
+  
+  /* LEFT */
+  if (currentLight < LO_BARRIER)
+    {
+      currentDir = LEFT;
+      turnLeft();
+    }  
 }
 
 int main()
