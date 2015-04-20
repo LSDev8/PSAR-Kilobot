@@ -1,8 +1,9 @@
 \documentclass[a4paper,8pt]{report}
 
-\usepackage[francais]{babel}
-\usepackage[T1]{fontenc}
+%\usepackage[utf8]
 \usepackage[latin1]{inputenc}
+\usepackage[francais]{babel}
+%\usepackage[T1]{fontenc}
 
 \usepackage[left=2cm]{geometry}
 \usepackage{amsmath,amssymb,mathrsfs}
@@ -10,6 +11,12 @@
 \usepackage[table,xcdraw]{xcolor}
 
 \usepackage{enumerate}
+
+\usepackage{pgfplots}
+\usetikzlibrary{shapes,positioning}
+\usepackage{tikz}
+
+%\tikzset{state/.style={circle,draw=black, very thick,minimum size=4em}}
 
 %Utilisation des codes sources en C
 \usepackage{listings}
@@ -30,6 +37,7 @@
 \maketitle
 \renewcommand{\contentsname}{Sommaire}
 \tableofcontents
+\listoffigures
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
@@ -71,41 +79,6 @@ Il existe plusieurs projets similaires aux kilobots, par exemple le projet \text
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
-%                           LE PRODUIT                           %
-%                                                                %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Le Produit}
-
-\section*{Description des attentes}\label{sec:name}
-\addcontentsline{toc}{section}{Description des attentes}
-
-Le but de ce projet est de prendre en main la plate-forme Kilobot (l'API et les robots) puis de cr\'eer une API manipulant un autre type de mod\`ele robotique.\\
-Cette API devra permettre la mise en place, sur la plate-forme Kilobot, d'un mod\`ele que nous nommerons \textbf{mod\`ele A}.
-Ce mod\`ele peut se r\'esumer de la fa\c con suivante : \\
-
-\begin{itemize}
-\item chaque robot poss\`ede un rep\`ere orthonorm\'e.
-\item chaque robot poss\`ede une vision "infinie".
-\item chaque robot ne poss\`ede aucun moyen de communiquer avec ces cong\'en\`eres.
-\end{itemize}
-
-\medskip
-Ces contraintes posent plusieurs probl\`ematiques.\\
-Comment simuler une vision "infinie" avec la plate-forme Kilobot ? Comment simuler un axe orthonorm\'e ? Comment localiser les robots les uns par rapport aux autres ? \\
-
-Nous pouvons r\'esoudre le probl\`eme de la localisation et de l'axe orthonorm\'e en utilisant la m\'ethode de la trilat\'eration. Les robots Kilobot ne poss\`edent pas de cam\'era et ont une port\'ee de communication limit\'ee ce qui nous ne permet pas d'impl\'ementer un vision infinie \`a proprement parler.\\
-Nous d\'etaillerons les possibilit\'ees des kilobots dans un prochain chapitre.\\
-
-\smallskip
-L'API doit fonctionner sur tous les types de syst\`emes (\textit{Windows}, \textit{OSX}, \textit{Linux}) et doit \^etre extensible afin de facilit\'e l'ajout de futures fonctionnalit\'ees.\\
-
-\section*{Fonctions de l'API}\label{sec:name}
-\addcontentsline{toc}{section}{Fonctions de l'API}
-
-\textit{A COMPLETER}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                                                %
 %                          CONTRAINTES                           %
 %                                                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -138,7 +111,7 @@ Le calcul de la distance entre un robot et un autre se fait via l'envoi et la r\
 \addcontentsline{toc}{subsection}{D\'eplacement}
 
 L'une des principales capacit\'es des robots est de pouvoir se mouvoir dans leur environnement. L'une des solutions les plus simples et efficace est d'utiliser un design \`a deux roues, chaque roue \'etant contr\^ol\'e par un moteur. Mais cette solution est aussi tr\`es ch\`ere et ne permettra pas de r\'ealiser un robot \`a bas co\^uts. \\
-Pour y rem\'edier, les kilobots disposent de trois jambes rigides et de deux moteurs \`a vibration dispos\'e de chaque c\^ot\'es du robot. Lorsqu'un des moteurs est activ\'es, il g\'en\`ere une force centrip\`ete qui est convertis en une force vers l'avant transmise \`a la jambe situ\'e en dessous du moteur. Gr\^ace au positionnement d\'ecentr\'e de chaque moteur, la mise en marche de l'un ou l'autre va causer une rotation vers la gauche ou la droite en fonction du moteur. En activant les deux moteurs en m\^eme temps et en contr\^olant la magnitude de leur vibration, ils est alors possible de faire avancer le robot en ligne droite vers l'avant. Il peut ainsi se d\'eplacer \`a une vitesse d'environs 1 cm/s et pivoter \`a environs 45°/s.\\
+Pour y rem\'edier, les kilobots disposent de trois jambes rigides et de deux moteurs \`a vibration dispos\'e de chaque c\^ot\'es du robot. Lorsqu'un des moteurs est activ\'es, il g\'en\`ere une force centrip\`ete qui est convertis en une force vers l'avant transmise \`a la jambe situ\'e en dessous du moteur. Gr\^ace au positionnement d\'ecentr\'e de chaque moteur, la mise en marche de l'un ou l'autre va causer une rotation vers la gauche ou la droite en fonction du moteur. En activant les deux moteurs en m\^eme temps et en contr\^olant la magnitude de leur vibration, ils est alors possible de faire avancer le robot en ligne droite vers l'avant. Il peut ainsi se d\'eplacer \`a une vitesse d'environs 1 cm/s et pivoter \`a environs 45Â°/s.\\
 
 \subsection*{Contr\^ole des robots par l'op\'erateur}\label{subsec:name}
 \addcontentsline{toc}{subsection}{Contr\^ole des robots par l'op\'erateur}
@@ -216,11 +189,134 @@ De plus, nous avons rencontr\'es des probl\`emes lors de la calibration des mote
 Apr\`es recherche, nous d\'ecid\^ames d'utiliser le firmware kilobotics. Kilobotics est le nom de la librairie d\'evelopp\'e par l'universit\'e d'Harvard. Il est open-source et est plus r\'ecent et dispose d'un driver pour Linux. De plus, son utilisation limite les risques pour le mat\'erielle. Le contr\^oleur permet de charger les programmes dans les kilobots. Mais pour effectuer cela avec le firmware d'origine de la K-Team, il faut \`a chaque nouveau programme reprogrammer le microcontr\^oleur du contr\^oleur, ce qui implique le risque de se retrouver avec un microcontr\^oleur mal programmer et alors un contr\^oleur potentiellement hs. Le firmware kilobotics n\'ecessite lui de ne le reprogrammer qu'une seule fois, ce qui limite grandement les risques. \\
 En ce qui concerne la calibration, kilobotic permet via l'interface graphique (kilogui) de calibrer chaque moteur s\'epar\'ement mais aussi de leur attribuer des valeurs diff\'erentes pour le d\'eplacement en ligne droite. Kilogui propose aussi la possibilit\'e de rentrer directement les valeurs souhait\'es (entre 1 et 255) pour la puissance des moteurs. Enfin, il est possible d'affecter un identifiant \`a chaque robot qui sera stock\'e dans la m\'emoire EPROM.\\
 
-\section*{de temps}\label{sec:name}
-\addcontentsline{toc}{section}{De temps}
+%\section*{de temps}\label{sec:name}
+%\addcontentsline{toc}{section}{De temps}
+
+%\textit{A COMPLETER}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                %
+%                           LE PRODUIT                           %
+%                                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{L'API}
+
+\section*{Description des attentes}\label{sec:name}
+\addcontentsline{toc}{section}{Description des attentes}
+
+Le projet doit permettre de cr\'eer une API simulant un autre type de mod\`ele robotique sur la plate-forme Kilobot.\\
+Nous nommerons ce mod\`ele \textbf{mod\`ele A} pour nous aider dans nos futures explications.\\
+Ce mod\`ele peut se r\'esumer de la fa\c con suivante : \\
+
+\begin{itemize}
+\item chaque robot poss\`ede un rep\`ere orthonorm\'e.
+\item chaque robot poss\`ede une vision "infinie".
+\item chaque robot ne poss\`ede aucun moyen de communiquer avec ces cong\'en\`eres.
+\item chaque deplacement du robot est pr\'ecis.
+\end{itemize}
+
+\medskip
+Ces contraintes posent plusieurs probl\`ematiques. En effet la plate-forme Kilobot ne propose aucune des ces contraintes. (cf chapitre pr\'ec\'edent)\\
+Comment simuler une vision "infinie" avec la plate-forme Kilobot ? Comment simuler un axe orthonorm\'e ? Comment localiser les robots les uns par rapport aux autres ? \\
+
+%%%%%%%
+% IMAGES du modele theorique.
+%%%%%%%
+
+Nous pouvons r\'esoudre le probl\`eme de la localisation et de l'axe orthonorm\'e en utilisant la m\'ethode de la trilat\'eration. Les robots Kilobot ne poss\`edent pas de cam\'era et ont une port\'ee de communication limit\'ee ce qui nous ne permet pas d'impl\'ementer un vision infinie \`a proprement parler.\\
+
+\subsection*{Premi\`ere Approche}\label{sec:name}
+\addcontentsline{toc}{subsection}{Premi\`ere Approche}
+
+Nous pouvons, de mani\`ere na\"{i}ve, r\'esoudre le prob\`eme de localisation des robots en disposant des balises sur un cercle de diam\`etre 14cm (cf figure : ~\ref{figureI}).\\
+Chaque point de la figure repr\'esente une balise, et les cercles permettents de visualiser les zones de communications.\\
+Nous remarquons que l'ajout de cinq balises sur le cercle nous permet pas de recouvrir de mani\`ere optimale la zone (int\'erieur du cercle) donc nous doublons le nombre de balises.\\
+Cela permet effectivement de couvrir toute la zone et de localiser de mani\`ere "pr\'ecise".\\
+Notre approche r\'esout le probl\`eme de la localisation mais pose un autre probl\`eme. Comment augmenter la zone de travail?\\
+En effet, la zone couverte permet de faire fonctionner correctement seulement deux kilobots.\\
+Donc notre approche n'est pas viable pour simuler le mod\`ele A sur la plate-forme Kilobot.\\
+
+\subsection*{Seconde Approche}\label{sec:name}
+\addcontentsline{toc}{subsection}{Seconde Approche}
+
+\begin{figure}
+  \begin{tikzpicture}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %           VARIABLE RAYON            %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \newcommand{\rayon}{4}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %        AVEC 5 BALISES               %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \draw[line width=3pt] (0,0) -- (0,\rayon);                % 0 -> A
+    \draw[red,line width=2pt] (0,\rayon) -- (18:\rayon);      % A -> B
+    \draw[red,line width=2pt] (18:\rayon) -- (-54:\rayon);    % B -> C
+    \draw[red,line width=2pt] (-54:\rayon) -- (-126:\rayon);  % C -> D
+    \draw[red,line width=2pt] (-126:\rayon) -- (-198:\rayon); % D -> E
+    \draw[red,line width=2pt] (-198:\rayon) -- (0,\rayon);    % E -> A
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %        AVEC 10 BALISES              %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \draw[blue,line width=2pt] (0,\rayon) -- (54:\rayon);       % A  -> AB
+    \draw[blue,line width=2pt] (54:\rayon) -- (18:\rayon);      % AB -> B
+    \draw[blue,line width=2pt] (18:\rayon) -- (-18:\rayon);     % B  -> BC
+    \draw[blue,line width=2pt] (-18:\rayon) -- (-54:\rayon);    % BC -> C
+    \draw[blue,line width=2pt] (-54:\rayon) -- (-90:\rayon);    % C  -> CD
+    \draw[blue,line width=2pt] (-90:\rayon) -- (-126:\rayon);   % CD -> D
+    \draw[blue,line width=2pt] (-126:\rayon) -- (-162:\rayon);  % D  -> DE
+    \draw[blue,line width=2pt] (-162:\rayon) -- (-198:\rayon);  % DE -> E
+    \draw[blue,line width=2pt] (-198:\rayon) -- (-234:\rayon);  % E  -> EA
+    \draw[blue,line width=2pt] (-234:\rayon) -- (0,\rayon);     % EA -> A
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %         ARC avec 5 balises          %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \draw[densely dashdotdotted,red] (0,\rayon) circle (\rayon);
+    \draw[densely dashdotdotted,red] (18:\rayon) circle (\rayon);
+    \draw[densely dashdotdotted,red] (-54:\rayon) circle (\rayon);
+    \draw[densely dashdotdotted,red] (-126:\rayon) circle (\rayon);
+    \draw[densely dashdotdotted,red] (-198:\rayon) circle (\rayon);
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %         ARC avec 10 balises         %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \draw[densely dashdotdotted,blue] (54:\rayon) circle (\rayon);
+    \draw[densely dashdotdotted,blue] (-18:\rayon) circle (\rayon);
+    \draw[densely dashdotdotted,blue] (-90:\rayon) circle (\rayon);
+    \draw[densely dashdotdotted,blue] (-162:\rayon) circle (\rayon);
+    \draw[densely dashdotdotted,blue] (-234:\rayon) circle (\rayon);
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %               INIT                  %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \draw[line width=3pt] (0,0) circle (\rayon);
+    
+    \draw (0,\rayon) node[above]{$A$};
+    \draw (18:\rayon.2) node[above]{$B$};
+    \draw (-54:\rayon.2) node[right]{$C$};
+    \draw (-126:\rayon.2) node[below]{$D$};
+    \draw (-198:\rayon.2) node[left]{$E$};
+    
+    \draw (54:\rayon.2) node[above]{$AB$};
+    \draw (-18:\rayon.2) node[right]{$BC$};
+    \draw (-90:\rayon.2) node[below]{$CD$};
+    \draw (-162:\rayon.2) node[left]{$DE$};
+    \draw (-234:\rayon.2) node[left]{$EA$};
+    
+  \end{tikzpicture}
+  \caption{Premi\`ere Approche}
+  \label{figureI}
+\end{figure}
+
+\smallskip
+L'API doit fonctionner sur tous les types de syst\`emes (\textit{Windows}, \textit{OSX}, \textit{Linux}) et doit \^etre extensible afin de facilit\'e l'ajout de futures fonctionnalit\'ees.\\
+
+\section*{Fonctions de l'API}\label{sec:name}
+\addcontentsline{toc}{section}{Fonctions de l'API}
 
 \textit{A COMPLETER}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
@@ -238,12 +334,36 @@ Ce projet se d\'ecoupe en 3 phases.\\
 \end{enumerate}
 
 \medskip
-\section*{Organisation}\label{sec:name}
-\addcontentsline{toc}{section}{Organisation}
 
-Le projet se d\'eroulant en trois phases, nous avons p\^ut r\'epartir la charge de travail de mani\`ere optimale.\\
+\section*{Phase I}\label{sec:name}
+\addcontentsline{toc}{section}{Phase I}
+
 La phase I ne comprenant que de la recherche documentaire et la prise en main de la plate-forme, la r\'epartition se deroula ainsi, Arnaud prit en main la plate-forme et Benjamin la recherche documentaire.\\
+
+\section*{Phase II}\label{sec:name}
+\addcontentsline{toc}{section}{Phase II}
+
 La phase II demandant plus de r\'eflexion, nous m\^imes nos comp\'etences acquises \`a la premi\`ere phase en commun afin de proposer un bio-algorithme digne d'int\'er\^et.\\
+Notre bio-algorithme se base sur le principe de phototaxis.\\
+
+\smallskip
+\textit{R\'eaction de locomotion d'organismes mobiles provoqu\'ee par la lumi\`ere et qui les porte soit \`a s'en approcher (phototaxie positive), soit \`a s'en \'eloigner (phototaxie n\'egative).}\\
+
+\smallskip
+La premi\`ere version de notre algorithme ne permet pas une entraide des kilobots, c'est \`a dire que chaque robot suit son programme sans se souci\'e des autres.\\
+Cette version ne permet donc pas a un essaim en formation de suivre la lumi\`ere tout en gardant cette formation.\\
+
+\iffalse
+La seconce version de notre algorithme utilise l'algorithme de gradient afin de garder les kilobots en formation jusqu'\`a la source de lumi\`ere.\\
+Par exemple les kilobots ont une formation en A, et ils doivent garder cette forme jusqu'\`a la destination.\\
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                %
+%                          ANNEXE                                %
+%                                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Annexe}
 
 \section*{Mat\'eriel Utilis\'e}\label{sec:name}
 \addcontentsline{toc}{section}{Mat\'eriel Utilis\'e}
@@ -257,17 +377,10 @@ Nous utiliserons les logiciels fournis pour l'API Kilobotics pour le d\'eveloppe
 Le projet sera h\'eberg\'e sous l'organisation \textit{\textbf{LSDev8}}\footnote{https://github.com/LSDev8/}.\\
 Nous ferons nos simulations sous le logiciel \textit{\textbf{V-Rep}}\footnote{http://www.coppeliarobotics.com} afin de valider de mani\`ere plus rapide nos algorithmes.\\
 
-\section*{Cas d'utilisation}\label{sec:name}
-\addcontentsline{toc}{section}{Cas d'utilisation}
+%\section*{Cas d'utilisation}\label{sec:name}
+%\addcontentsline{toc}{section}{Cas d'utilisation}
 
-\textit{A COMPLETER}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                                                %
-%                          TUTORIELS                             %
-%                                                                %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Tutoriels}
+%\textit{A COMPLETER}
 
 \section*{Chargement d'un nouveau firmware}\label{sec:name}
 \addcontentsline{toc}{section}{Chargement d'un nouveau firmware}
