@@ -1,0 +1,36 @@
+CORDA
+=====
+
+A robot is initially in a waiting state (WAIT): at any point in time,
+asynchronously and independently from the other robots, it observes the 
+environment in its area of visibility (OBSERVE), it calculates its destination
+point based only on the current locations of the observed robots (COMPUTE), it 
+then moves towards that point (MOVE) and goes back to a waiting state. The 
+phases are described more formally in the following.
+
+1 WAIT : The robot is idle. A robot cannot stay infinitely idle.
+  ----
+
+2 OBSERVE : The robot observes the world by taking a snapshot of the poistions
+  -------   of all other robots with respect to its local coordinates system.
+            Each robot r is viewed as a point, and therefoe its positions in
+	    the plane is given by its coordinates. In addition, the robot
+	    cannot in general detect whether there is more than one fellow 
+	    robot on any of the observed points, included the position where
+	    the observing robot is. We say it cannot detect multiplicity.
+	    If, on the other hand, a robot can regonize that there is more than
+	    one fellow on the positions where it is, we say that it can detect a
+	    weak multiplicity.
+
+3 COMPUTE : The robot performs a local computation according to its 
+  -------   deterministic, oblivious algorithm. The result of the computation
+  	    can be a destination point or do_nothing().
+
+4 MOVE : If the result of the computation was do_nothing(), the robot does not
+  ----   move; otherwise it moves, along any curve it likes, towards the point
+  	 computed in the previous phase. The robot moves towards the computed
+	 destination of an unpredictable amount of space, which is assumed
+	 neither infinite, nor infinitesimally small. Hence, the robot can only
+	 go toward its goal along a curve, but its cannot know how far it will
+	 go in the current cycle, because it can stop anytime during its
+	 movement.
