@@ -205,8 +205,8 @@ En ce qui concerne la calibration, kilobotic permet via l'interface graphique (k
 \addcontentsline{toc}{section}{Description des attentes}
 
 Le projet doit permettre de cr\'eer une API simulant un autre type de mod\`ele robotique sur la plate-forme Kilobot.\\
-Nous nommerons ce mod\`ele \textbf{mod\`ele A} pour nous aider dans nos futures explications.\\
-Ce mod\`ele peut se r\'esumer de la fa\c con suivante : \\
+Ce mod\`ele se nomme : \textbf{mod\`ele CORDA}.\\
+Le mod\`ele CORDA nous impose quelques contraintes, ces contraintes portent sur l'aspect physique des robots, on peut les r\'esumer de la fa\c con suivante : \\
 
 \begin{itemize}
 \item chaque robot poss\`ede un rep\`ere orthonorm\'e.
@@ -217,13 +217,16 @@ Ce mod\`ele peut se r\'esumer de la fa\c con suivante : \\
 
 \medskip
 Ces contraintes posent plusieurs probl\`ematiques. En effet la plate-forme Kilobot ne propose aucune des ces contraintes. (cf chapitre pr\'ec\'edent)\\
-Comment simuler une vision "infinie" avec la plate-forme Kilobot ? Comment simuler un axe orthonorm\'e ? Comment localiser les robots les uns par rapport aux autres ? \\
+Donc comment simuler une vision "infinie" avec la plate-forme Kilobot ? Comment simuler un axe orthonorm\'e ? Comment localiser les robots les uns par rapport aux autres ? Et plus important comment un robot peut se localiser dans l'espace ?\\
 
 %%%%%%%
 % IMAGES du modele theorique.
 %%%%%%%
 
-Nous pouvons r\'esoudre le probl\`eme de la localisation et de l'axe orthonorm\'e en utilisant la m\'ethode de la trilat\'eration. Les robots Kilobot ne poss\`edent pas de cam\'era et ont une port\'ee de communication limit\'ee ce qui nous ne permet pas d'impl\'ementer un vision infinie \`a proprement parler.\\
+\section*{Impl\'ementation}\label{sec:name}
+\addcontentsline{toc}{section}{Impl\'ementation}
+
+Nous pouvons r\'esoudre le probl\`eme de la localisation dans l'espace (ainsi que la localisation par rapport aux autres) et de l'axe orthonorm\'e en utilisant la m\'ethode de la trilat\'eration. Les robots Kilobot ne poss\`edent pas de cam\'era et ont une port\'ee de communication limit\'ee ce qui nous ne permet pas d'impl\'ementer un vision infinie \`a proprement parler.\\
 
 \subsection*{Premi\`ere Approche}\label{sec:name}
 \addcontentsline{toc}{subsection}{Premi\`ere Approche}
@@ -234,10 +237,11 @@ Nous remarquons que l'ajout de cinq balises sur le cercle nous permet pas de rec
 Cela permet effectivement de couvrir toute la zone et de localiser de mani\`ere "pr\'ecise".\\
 Notre approche r\'esout le probl\`eme de la localisation mais pose un autre probl\`eme. Comment augmenter la zone de travail?\\
 En effet, la zone couverte permet de faire fonctionner correctement seulement deux kilobots.\\
-Donc notre approche n'est pas viable pour simuler le mod\`ele A sur la plate-forme Kilobot.\\
+Donc notre approche n'est pas viable pour simuler le mod\`ele CORDA sur la plate-forme Kilobot.\\
 
-\subsection*{Seconde Approche}\label{sec:name}
-\addcontentsline{toc}{subsection}{Seconde Approche}
+%%%%%%%
+% IMAGES des robots avec la premiere approche
+%%%%%%%
 
 \begin{figure}
   \begin{tikzpicture}
@@ -310,13 +314,33 @@ Donc notre approche n'est pas viable pour simuler le mod\`ele A sur la plate-for
   \label{figureI}
 \end{figure}
 
+\subsection*{Seconde Approche}\label{sec:name}
+\addcontentsline{toc}{subsection}{Seconde Approche}
+
+La premi\`ere approche r\'esolvait le probl\`eme de localisation et de positionnement, mais ne permettait pas de faire fonctionner plus de deux robots de mani\`ere viable.\\
+Donc notre deuxi\`eme approche devra, elle aussi, de resoudre le probl\`eme de localisation et de positionnement mais devra, par contre, agrandir la zone de travail des robots (par exemple de permettre \`a 6 robots ou plus d'\^etre dans la zone de travail sans se g\^ener).\\
+
+\medskip
+Nous pouvons utiliser la m\'ethode dite de "bounding box" mais cette m\'ethode augmenterait le nombre de balises par rapport au nombre de robots utiles de mani\`ere trop importante (du faite de la faible distance de communication des Kilobots).\\
+Nous pouvons utiliser la m\'ethode de multilat\'eration qui ne demande que trois balises et ne demande pas une connectivit\'e directe avec les balises (la distance est estim\'ee gr\^ace \`a la propagation d'un gradient) mais cette m\'ethode pose le probl\`eme de la puissance de calcul, en effet la plate-forme Kilobot offre une puissance de calcul limit\'ee ne permettant pas d'impl\'ementer cette m\'ethode.\\
+
 \smallskip
-L'API doit fonctionner sur tous les types de syst\`emes (\textit{Windows}, \textit{OSX}, \textit{Linux}) et doit \^etre extensible afin de facilit\'e l'ajout de futures fonctionnalit\'ees.\\
+La solution serait de proposer une m\'ethode hybride entre ces deux m\'ethodes, soit la m\'ethode de "bounding box" avec la distance estim\'ee avec un gradient.\\
+Cette solution permettra \`a terme d'agrandir la zone de travail mais aura comme cons\'equence une perte de pr\'ecision.\\
+
 
 \section*{Fonctions de l'API}\label{sec:name}
 \addcontentsline{toc}{section}{Fonctions de l'API}
 
-\textit{A COMPLETER}
+L'API devra fonctionner sur tous types de de syst\`emes (\textit{Windows}, \textit{OSX}, \textit{Linux}) et doit \^etre extensible afin de facilit\'e l'ajout de futures fonctionnalit\'ees.\\
+
+\smallskip
+La premi\`iere version de l'API ne proposera que les m\'ethodes suivantes : \\
+
+\begin{description}
+\item[getPosition] qui permet \`a un robot de connaitre sa position.
+\item[toPosition] qui permet \`a un robot de se rendre aux coordonn\'ees en param\`etre.
+\end{description}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
