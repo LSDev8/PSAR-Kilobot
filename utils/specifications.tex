@@ -17,6 +17,7 @@
 \usepackage{tikz}
 
 \usepackage[nottoc, notlof, notlot]{tocbibind}
+\usepackage{verbatim}
 
 %\tikzset{state/.style={circle,draw=black, very thick,minimum size=4em}}
 
@@ -403,16 +404,66 @@ Le projet sera h\'eberg\'e sous l'organisation \textit{\textbf{LSDev8}}\footnote
 Nous utilisions (au d\'ebut du projet) pour nos simulations le logiciel \textit{\textbf{V-Rep}}\footnote{http://www.coppeliarobotics.com} mais celui-ci se r\'ev\'ela trop contraignant dans son utilisation donc nous opt\^ames pour le logiciel \textit{\textbf{kbsim}}\footnote{https://github.com/ajhalme/kbsim} car celui-ci est un simulateur exclusivement pour kilobot (une copie de ce logiciel se trouve aussi sur l'organisation \textit{\textbf{LSDev8}}).\\
 
 
-%\section*{Cas d'utilisation}\label{sec:name}
-%\addcontentsline{toc}{section}{Cas d'utilisation}
+\section*{Tutoriels}\label{sec:name}
+\addcontentsline{toc}{section}{Tutoriels}
 
-%\textit{A COMPLETER}
+\subsection*{Installation du contr\^oleur}\label{sec:name}
+\addcontentsline{toc}{subsection}{Installation du contr\^oleur}
 
-\section*{Chargement d'un nouveau firmware}\label{sec:name}
-\addcontentsline{toc}{section}{Chargement d'un nouveau firmware}
+Le contr\^oleur exploite un microcontr\^oleur Atmega m328p. Lors de la première connexion du contr\^oleur \`a un ordinateur Windows, Windows va automatiquement aller t\'el\'echarg\'e les drivers correspondant via windows update et les installer. Il n'y a pas d'autre op\'erations \`a faire. Sous Linux, aucun driver n'est n\'ecessaire.\\
+Si vous utilisez le firmware original de la K-Team, il vous faudra alors installer pour Windows un driver suppl\'ementaire afin de faire communiquer l'interface graphique avec le contr\^oleur. Pour cela, suivez les instructions fournis dans le manuel de la K-Team.\\
 
-\section*{Calibrage des kilobots}\label{sec:name}
-\addcontentsline{toc}{section}{Calibrage des kilobots}
+\medskip
+Probl\`eme\\
+
+\fbox{
+\begin{minipage}{0.7\textwidth}
+ Si le contr\^oleur n'est pas reconnus par windows, assurer vous qu'il appara\^it bien dans le gestionnaire de p\'eriph\'erique.\\ Il doit normalement appara\^itre comme un Serial Port (FTDI) et un AVRisp mkII (Jungo).
+\end{minipage}
+}
+
+\subsection*{Flashage du contr\^oleur et des kilobots}\label{sec:name}
+\addcontentsline{toc}{subsection}{Flashage du contr\^oleur et des kilobots}
+
+Si vous d\'esirez passer au firmware kilobotics, il est n\'ecessaire d'utiliser le logiciel AvrDude. Ce logiciel d\'evelopper par Atmel permet de reprogrammer le microcontr\^oleur du contr\^oleur. Pour cela, connecter le contr\^oleur \`a un ordinateur via un cable usb, ouvrer un terminal et placez-vous dans le r\'epertoire contenant le nouveau firmware (au format .hex) puis assurez-vous que le cavalier du contr\^oleur est bien positionn\'e en mode interne (c'est la position par d\'efaut : c'est \`a dire sur la gauche). \\
+
+\begin{center}
+\includegraphics[scale=0.7]{flashI.png}
+\end{center}
+
+Enfin, ex\'ecuter la commande suivante :\\
+
+\begin{verbatim}
+avrdude -p m328  -P usb -c avrispmkII -U "flash:w:controller.hex:i"
+\end{verbatim}
+
+Pour flasher les kilobots, l'op\'eration est tr\`es similaire. Connecter le contr\^oleur, ouvrer un terminal et placez-vous dans le r\'epertoire contenant le nouveau firmware (toujours au format .hex). Placez cette fois-ci le cavalier du contr\^oleur en mode externe (sur la droite): \\
+
+\begin{center}
+\includegraphics[scale=0.5]{flashII.png}
+\end{center}
+
+Puis connecter le c\^able au contr\^oleur et au kilobot via les 6 trous pr\'esent sur le c\^ot\'e du kilobot.\\
+Enfin, ex\'ecuter la commande suivante :\\
+
+\begin{verbatim}
+avrdude -p m328p -P usb -c avrispmkII -U "flash:w:bootloader.hex:i"
+\end{verbatim}
+
+\medskip
+Probl\`eme\\
+
+\fbox{
+\begin{minipage}{0.7\textwidth}
+ Si AvrDude ne reconnaît pas le contr\^oleur, assurez vous d'avoir positionn\'e le cavalier dans la bonne position. Sinon, la connexion entre le connecteur du câble et le kilobot est tr\`es sensible. Il faut que toutes les broches du connecteur soit en contact avec le kilobot. N'h\'esitez surtout pas \`a presser l\'eg\`erement le connecteur contre le kilobot et \`a le placer l\'eg\`erement en biais afin d'assurer la bonne connexion entre le connecteur et le robot.
+\end{minipage}
+}
+
+%\subsection*{Chargement d'un nouveau firmware}\label{sec:name}
+%\addcontentsline{toc}{subsection}{Chargement d'un nouveau firmware}
+
+%\subsection*{Calibrage des kilobots}\label{sec:name}
+%\addcontentsline{toc}{subsection}{Calibrage des kilobots}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
