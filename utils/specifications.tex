@@ -16,6 +16,8 @@
 \usetikzlibrary{shapes,positioning}
 \usepackage{tikz}
 
+\usepackage[nottoc, notlof, notlot]{tocbibind}
+
 %\tikzset{state/.style={circle,draw=black, very thick,minimum size=4em}}
 
 %Utilisation des codes sources en C
@@ -398,7 +400,8 @@ Le mat\'eriel se compose des kilobots, de transmetteur et d'un PC quelqu'il soit
 
 Nous utiliserons les logiciels fournis pour l'API Kilobotics pour le d\'eveloppement de notre API, notre gestionnaire de version sera Github.\\
 Le projet sera h\'eberg\'e sous l'organisation \textit{\textbf{LSDev8}}\footnote{https://github.com/LSDev8/}.\\
-Nous ferons nos simulations sous le logiciel \textit{\textbf{V-Rep}}\footnote{http://www.coppeliarobotics.com} afin de valider de mani\`ere plus rapide nos algorithmes.\\
+Nous utilisions (au d\'ebut du projet) pour nos simulations le logiciel \textit{\textbf{V-Rep}}\footnote{http://www.coppeliarobotics.com} mais celui-ci se r\'ev\'ela trop contraignant dans son utilisation donc nous opt\^ames pour le logiciel \textit{\textbf{kbsim}}\footnote{https://github.com/ajhalme/kbsim} car celui-ci est un simulateur exclusivement pour kilobot (une copie de ce logiciel se trouve aussi sur l'organisation \textit{\textbf{LSDev8}}).\\
+
 
 %\section*{Cas d'utilisation}\label{sec:name}
 %\addcontentsline{toc}{section}{Cas d'utilisation}
@@ -410,5 +413,14 @@ Nous ferons nos simulations sous le logiciel \textit{\textbf{V-Rep}}\footnote{ht
 
 \section*{Calibrage des kilobots}\label{sec:name}
 \addcontentsline{toc}{section}{Calibrage des kilobots}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                %
+%                          BIBLIOGRAPHIE                         %
+%                                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{kilobot}
 
 \end{document}

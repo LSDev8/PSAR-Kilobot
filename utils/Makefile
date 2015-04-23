@@ -49,7 +49,7 @@ MODE = --interaction batchmode
 #*******************************************************************************
 # Check what we have to do
 
-.PHONY: help usage dvi ps pdf clean all final
+.PHONY: help usage dvi ps pdf bib clean all final
 
 help: usage
 
@@ -92,6 +92,7 @@ pdf: $(DOC).tex
 	@echo "***************************************************************************"
 	$(PDF) $(DOC).tex
 
+
 img: $(DOC).tex
 	@echo "***************************************************************************"
 	@echo "creation du dossier"
@@ -130,6 +131,40 @@ dia:
 	$(PDF) $(DIAPO).tex
 	rm -f *.aux *.glo *.gls *.idx *.ilg *.ind *.lof *.log *.lot *.out *.toc *.nav *.snm
 
+bib:$(DOC).tex
+	@echo "###########################################################################"
+	@echo "lancement de la compilation"
+	@echo "###########################################################################"
+	@echo ""
+	@echo "***************************************************************************"
+	@echo "creation du dossier"
+	@echo "***************************************************************************"
+	mkdir -p $(FINALDIR)
+	pdflatex $(DOC).tex
+	bibtex $(DOC)
+	pdflatex $(DOC).tex
+	@echo ""
+	@echo "***************************************************************************"
+	@echo "deplacement des fichiers dvi, ps et pdf dans le dossier"
+	@echo "***************************************************************************"
+	mv $(DOC).dvi $(FINALDIR)
+	mv $(DOC).ps $(FINALDIR)
+	mv $(DOC).pdf $(FINALDIR)
+	@echo ""
+	@echo "***************************************************************************"
+	@echo "suppression des fichiers temporaires"
+	@echo "***************************************************************************"
+	rm -f $(DOC).log
+	rm -f $(DOC).aux
+	rm -f $(DOC).toc
+	rm -f $(DOC).lot
+	rm -f $(DOC).lof
+	@echo ""
+	@echo "***************************************************************************"
+	@echo "affichage du pdf"
+	@echo "***************************************************************************"
+	$(READPDF) $(DOC)/$(DOC).pdf
+
 final: $(DOC).tex
 	@echo "###########################################################################"
 	@echo "lancement de la compilation"
@@ -139,6 +174,8 @@ final: $(DOC).tex
 	@echo "creation du dossier"
 	@echo "***************************************************************************"
 	mkdir -p $(FINALDIR)
+	make pdf
+	bibtex $(DOC)
 	make pdf
 	@echo ""
 	@echo "***************************************************************************"
@@ -167,6 +204,6 @@ clean:
 	@echo "***************************************************************************"
 	@echo "nettoyage complet"
 	@echo "***************************************************************************"
-	rm -f *~ *.aux *.glo *.gls *.idx *.ilg *.ind *.lof *.log *.lot *.out *.toc *.nav *.snm *.pdf
-	rm -f $(DOC).haux $(DOC).hind $(DOC).htoc $(DOC).image.tex $(DOC).dvi $(DOC)*.ps $(DOC).pdf $(DOC).b* *.gif
+	rm -f *~ *.aux *.glo *.gls *.idx *.ilg *.ind *.lof *.log *.lot *.out *.toc *.nav *.snm
+	rm -f $(DOC).haux $(DOC).hind $(DOC).htoc $(DOC).image.tex $(DOC).dvi $(DOC)*.ps $(DOC).b* *.gif
 	rm -rf $(DOC) $(DOC).pgf-plot.gnuplot
