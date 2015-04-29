@@ -465,7 +465,7 @@ Pour v\'erifier le bon fonctionnement des communications inter-kilobots, nous av
 \begin{table}[h]
 \begin{tabular}{lllll}
 \textbf{S :} & envoie un message $<$Horloge$>$ &  & \textbf{R :} & r\'eception d'un message $<$Horloge$>$                                                                                                                                                                             \\
-           &                                   &  &            & \begin{tabular}[c]{@{}l@{}}Si mon\_Horloge \textgreater Horloge            \\     décrémentation de mon\_Horloge d'une demi-période\\ Sinon    \\     incrémentation de mon\_Horloge d'une demi-période\end{tabular} \\
+           &                                   &  &            & \begin{tabular}[c]{@{}l@{}}Si mon\_Horloge \textgreater Horloge            \\     décrémentation de mon\_Horloge d'une demi-période\\ Sinon    \\     incrémentation de mon\_Horloge d'une demi-période\\ Fin Si\end{tabular} \\
 \end{tabular}
 \end{table}
 
@@ -485,7 +485,7 @@ Pour v\'erifier le bon fonctionnement des communications inter-kilobots avec d\'
                 &                          &  &                &                                                                                                                                                                                                                                                          \\
 \textbf{S :}    & envoie un message $<$$>$ &  & \textbf{S :}   &                                                                                                                                                                                                                                                          \\
 \textbf{R :}    &                          &  & \textbf{R :}   & r\'eception d'un message $<>$                                                                                                                                                                                                               \\
-                &                          &  &                & \begin{tabular}[c]{@{}l@{}} Si distance \textgreater= distance\_max\\ tourner à droite\\ avancer tout droit\\ Sinon SI distance \textless= distance\_min\\      touner à gauche \\ avancer tout droit\\ Sinon\\ avancer tout droit\\\end{tabular}
+                &                          &  &                & \begin{tabular}[c]{@{}l@{}} Si distance \textgreater= distance\_max\\ tourner à droite\\ avancer tout droit\\ Sinon SI distance \textless= distance\_min\\      touner à gauche \\ avancer tout droit\\ Sinon\\ avancer tout droit\\ Fin Si \end{tabular}
 \end{tabular}
 \end{table}
 
@@ -504,11 +504,39 @@ Notre bio-algorithme se base sur le principe de phototaxis.\\
 La premi\`ere version de notre algorithme ne permet pas une entraide des kilobots, c'est \`a dire que chaque robot suit son programme sans se souci\'e des autres.\\
 Cette version ne permet donc pas a un essaim en formation de suivre la lumi\`ere tout en gardant cette formation.\\
 L'algorithme se d\'eroule ainsi, chaque robot capte la lumi\`ere ambiante (la lumi\`ere ambiante doit \^etre faible afin de ne pas g\^ener les capteurs des kilobots dans la d\'etection de la source cible de lumi\`ere), si la source de lumi\`ere d\'etect\'ee par le capteur provient de la droite on tourne \`a droite et inversement, apr\`es chaque demi-tour on avance tout droit pendant un certain laps de temps.\\
+Les kilobots ne communiquent jamais ensemble.\\
 
-\iffalse
-La seconce version de notre algorithme utilise l'algorithme de gradient afin de garder les kilobots en formation jusqu'\`a la source de lumi\`ere.\\
-Par exemple les kilobots ont une formation en A, et ils doivent garder cette forme jusqu'\`a la destination.\\
-\fi
+\newpage
+\begin{center}
+  \rule{\linewidth}{.5pt}
+  \textbf{Phototaxis}\\
+  \rule{\linewidth}{.5pt}
+\end{center}
+
+\begin{verbatim}
+var currentLight <- indice de lumière ambiante.
+var currentDir   <- indice de direction.
+
+Tant que vrai   
+     réception de la lumière
+
+     Si currentLight > barrière haute
+     alors
+        -tourner à droite
+        -currentDir <- droite;
+     Fin Si
+ 
+     Si currentLight < barrière basse
+     alors
+        -tourner à gauche
+        -currentDir <- gauche;
+     Fin Si
+Fin Tant que
+\end{verbatim}
+
+%La seconce version de notre algorithme utilise l'algorithme de gradient afin de garder les kilobots en formation jusqu'\`a la source de lumi\`ere.\\
+%Par exemple les kilobots ont une formation en A, et ils doivent garder cette forme jusqu'\`a la destination.\\
+
 
 \section*{Phase III}\label{sec:name}
 \addcontentsline{toc}{section}{Phase III}
