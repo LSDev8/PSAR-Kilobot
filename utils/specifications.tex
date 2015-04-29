@@ -503,12 +503,11 @@ Nous utilisions (au d\'ebut du projet) pour nos simulations le logiciel \textit{
 \addcontentsline{toc}{subsection}{Installation du contr\^oleur}
 
 Le contr\^oleur exploite un microcontr\^oleur Atmega m328p. Lors de la première connexion du contr\^oleur \`a un ordinateur Windows, Windows va automatiquement aller t\'el\'echarg\'e les drivers correspondant via windows update et les installer. Il n'y a pas d'autre op\'erations \`a faire. Sous Linux, aucun driver n'est n\'ecessaire.\\
-Si vous utilisez le firmware original de la K-Team, il vous faudra alors installer pour Windows un driver suppl\'ementaire afin de faire communiquer l'interface graphique avec le contr\^oleur. Pour cela, suivez les instructions fournis dans le manuel de la K-Team.\\
+Si vous utilisez le firmware original de la K-Team, il vous faudra alors installer pour Windows un driver suppl\'ementaire afin de faire communiquer l'interface graphique avec le contr\^oleur. Pour cela, suivez les instructions fournis dans le manuel de la K-Team.
 
-\smallkip
 \begin{center}
   \fcolorbox{red}{white}{
-    \begin{minipage}{0.7\textwidth}
+    \begin{minipage}{1.0\textwidth}
       Si le contr\^oleur n'est pas reconnus par windows, assurer vous qu'il appara\^it bien dans le gestionnaire de p\'eriph\'erique.\\ Il doit normalement appara\^itre comme un Serial Port (FTDI) et un AVRisp mkII (Jungo).
     \end{minipage}
   }
@@ -525,9 +524,9 @@ Si vous d\'esirez passer au firmware kilobotics, il est n\'ecessaire d'utiliser 
 
 Enfin, ex\'ecuter la commande suivante :\\
 
-\begin{verbatim}
-avrdude -p m328  -P usb -c avrispmkII -U "flash:w:controller.hex:i"
-\end{verbatim}
+\begin{center}
+  \textbf{avrdude -p m328  -P usb -c avrispmkII -U "flash:w:controller.hex:i"}
+\end{center}
 
 Pour flasher les kilobots, l'op\'eration est tr\`es similaire. Connecter le contr\^oleur, ouvrer un terminal et placez-vous dans le r\'epertoire contenant le nouveau firmware (toujours au format .hex). Placez cette fois-ci le cavalier du contr\^oleur en mode externe (sur la droite): \\
 
@@ -538,14 +537,14 @@ Pour flasher les kilobots, l'op\'eration est tr\`es similaire. Connecter le cont
 Puis connecter le c\^able au contr\^oleur et au kilobot via les 6 trous pr\'esent sur le c\^ot\'e du kilobot.\\
 Enfin, ex\'ecuter la commande suivante :\\
 
-\begin{verbatim}
-avrdude -p m328p -P usb -c avrispmkII -U "flash:w:bootloader.hex:i"
-\end{verbatim}
+\begin{center}
+  \textbf{avrdude -p m328p -P usb -c avrispmkII -U "flash:w:bootloader.hex:i"}
+\end{center}
 
 \smallskip
 \begin{center}
   \fcolorbox{red}{white}{
-    \begin{minipage}{0.7\textwidth}
+    \begin{minipage}{1.0\textwidth}
       Si AvrDude ne reconnaît pas le contr\^oleur, assurez vous d'avoir positionn\'e le cavalier dans la bonne position. Sinon, la connexion entre le connecteur du câble et le kilobot est tr\`es sensible. Il faut que toutes les broches du connecteur soit en contact avec le kilobot. N'h\'esitez surtout pas \`a presser l\'eg\`erement le connecteur contre le kilobot et \`a le placer l\'eg\`erement en biais afin d'assurer la bonne connexion entre le connecteur et le robot.
     \end{minipage}
   }
