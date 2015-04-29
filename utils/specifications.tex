@@ -503,6 +503,7 @@ Notre bio-algorithme se base sur le principe de phototaxis.\\
 \smallskip
 La premi\`ere version de notre algorithme ne permet pas une entraide des kilobots, c'est \`a dire que chaque robot suit son programme sans se souci\'e des autres.\\
 Cette version ne permet donc pas a un essaim en formation de suivre la lumi\`ere tout en gardant cette formation.\\
+L'algorithme se d\'eroule ainsi, chaque robot capte la lumi\`ere ambiante (la lumi\`ere ambiante doit \^etre faible afin de ne pas g\^ener les capteurs des kilobots dans la d\'etection de la source cible de lumi\`ere), si la source de lumi\`ere d\'etect\'ee par le capteur provient de la droite on tourne \`a droite et inversement, apr\`es chaque demi-tour on avance tout droit pendant un certain laps de temps.\\
 
 \iffalse
 La seconce version de notre algorithme utilise l'algorithme de gradient afin de garder les kilobots en formation jusqu'\`a la source de lumi\`ere.\\
