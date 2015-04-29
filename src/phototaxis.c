@@ -1,7 +1,7 @@
 /*###############################################*/
 /*# Kilkobot Phototaxis - Move kilobot to light #*/
 /*###############################################*/
-#include <kilolib.h>
+#include "kilolib.h"
 
 #define RIGHT 0
 #define LEFT 1
@@ -37,14 +37,14 @@ void lightTrack()
 void turnRight()
 {
   spinup_motors();               /* kilobot's motor at full speed */
-  set_motors(0,kilo_turn_right);
+  set_motors(0,20);
   set_color(RGB(0,1,0));         /* GREEN LIGHT */
 }
 
 void turnLeft()
 {
   spinup_motors();
-  set_motors(kilo_turn_left,0);
+  set_motors(20,0);
   set_color(RGB(1,0,0));         /* RED LIGHT */
 }
 
