@@ -32,12 +32,68 @@
   numbersep=7pt,
 }
 
-\title{{\LARGE Kilobot \\ Cahier des charges}}
-\author{GUERMONT Arnaud, BIELLE Benjamin}
-
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Universit\'e Pierre et Marie Curie}\\[1.5cm] % Name of your university/college
+\textsc{\Large Projet SAR}\\[0.5cm] % Major heading such as course name
+%\textsc{\large Minor Heading}\\[0.5cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Kilobot}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+ 
+%----------------------------------------------------------------------------------------
+%AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Auteur:}\\
+Arnaud \textsc{Guermont} % Your name
+Benjamin \textsc{Bielle} % Your name
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Superviseur:} \\
+Dr. Swan \textsc{Dubois} % Supervisor's Name
+\end{flushright}
+\end{minipage}\\[4cm]
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+%\Large \emph{Author:}\\
+%John \textsc{Smith}\\[3cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[3cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+\includegraphics[width=7cm]{images/upmc.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
+ 
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+\end{titlepage}
+
 \renewcommand{\contentsname}{Sommaire}
 \tableofcontents
 \listoffigures
@@ -58,8 +114,18 @@
 \textbf{Kilobot} est une plate-forme constitu\'ee de petits robots autonomes. Cette plate-forme est propos\'ee par l'universit\'e d'Harvard\footnote{http://www.eecs.harvard.edu/ssr/projects/progSA/kilobot.html}. \\
 Ces robots se d\'eplacent uniquement par vibration et communiquent par infrarouges.\\
 
+\begin{figure}[!h]
+    \centering
+    \subfigure{ \includegraphics[width=6cm]{images/kilobotI.jpg}}
+    \subfigure{ \includegraphics[width=6cm]{images/kilobotII.jpg}}
+    \caption{Robots Kilobot}
+    \label{pandas}
+\end{figure}
+
 \smallskip
 Le but de ce projet est d'impl\'ementer une \textbf{API} permettant de manipuler des mod\`eles robotiques sur la plate-forme Kilobot. Ces mod\`eles ne sont pas pr\'evus pour la plate-forme Kilobot, notre API devra rendre cette impl\'ementation possible en restant simple et si possible facilement extensible.\\
+
+\bigskip
 
 \section*{L'existant}\label{sec:name}
 \addcontentsline{toc}{section}{L'existant}
@@ -78,7 +144,24 @@ Donc notre \textit{\textbf{API}} se basera sur celle-ci car elle nous garantie u
 \section*{Veille Technologique}\label{sec:name}
 \addcontentsline{toc}{section}{Veille Technologique}
 
-Il existe plusieurs projets similaires aux kilobots, par exemple le projet \textit{\textbf{I-Swarm}}\footnote{http://www.hizook.com/blog/2009/08/29/i-swarm-micro-robots-realized-impressive-full-system-integration}, mais seul la plate-forme \textit{\textbf{Kilobot}} permet de manipuler des centaines de robots de mani\`ere r\'ealiste hors d'un simulateur.\\
+Il existe plusieurs projets similaires aux kilobots, par exemple le projet \textit{\textbf{I-Swarm}}\footnote{http://www.hizook.com/blog/2009/08/29/i-swarm-micro-robots-realized-impressive-full-system-integration}, mais seul la plate-forme \textit{\textbf{Kilobot}} permet de manipuler des centaines de robots de mani\`ere r\'ealiste hors d'un simulateur (avec un prix convenable).\\
+Le projet \textit{\textbf{E-Swarm}}\footnote{http://www.e-swarm.org/research_main.php} propose un plate-forme int\'eressante mais le prix de chaque robot en fait une plate-forme non \'eligible pour ce projet.\\
+
+\begin{figure}[!h]
+    \centering
+    \subfigure{ \includegraphics[width=6cm]{images/iSwarm.jpg}}
+    \subfigure{ \includegraphics[width=6cm]{images/iSwarmII.jpg}}
+    \caption{Robots I-Swarm}
+    \label{pandas}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \subfigure{ \includegraphics[width=10cm]{images/eSwarmII.jpg}}
+    \subfigure{ \includegraphics[width=10cm]{images/eSwarmIII.jpg}}
+    \caption{Robots E-Swarm}
+    \label{pandas}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
@@ -341,6 +424,7 @@ La premi\`iere version de l'API ne proposera que les m\'ethodes suivantes :
 
 \begin{description}
 \item[getPosition] qui permet \`a un robot de connaitre sa position.
+\item[getVision] qui permet \`a un robot de connaitre la position des robots qui l'entoure.
 \item[toPosition] qui permet \`a un robot de se rendre aux coordonn\'ees en param\`etre.
 \end{description}
 
@@ -428,7 +512,7 @@ Probl\`eme\\
 Si vous d\'esirez passer au firmware kilobotics, il est n\'ecessaire d'utiliser le logiciel AvrDude. Ce logiciel d\'evelopper par Atmel permet de reprogrammer le microcontr\^oleur du contr\^oleur. Pour cela, connecter le contr\^oleur \`a un ordinateur via un cable usb, ouvrer un terminal et placez-vous dans le r\'epertoire contenant le nouveau firmware (au format .hex) puis assurez-vous que le cavalier du contr\^oleur est bien positionn\'e en mode interne (c'est la position par d\'efaut : c'est \`a dire sur la gauche). \\
 
 \begin{center}
-\includegraphics[scale=0.7]{flashI.png}
+  \includegraphics[scale=0.7]{images/flashI.png}
 \end{center}
 
 Enfin, ex\'ecuter la commande suivante :\\
@@ -440,7 +524,7 @@ avrdude -p m328  -P usb -c avrispmkII -U "flash:w:controller.hex:i"
 Pour flasher les kilobots, l'op\'eration est tr\`es similaire. Connecter le contr\^oleur, ouvrer un terminal et placez-vous dans le r\'epertoire contenant le nouveau firmware (toujours au format .hex). Placez cette fois-ci le cavalier du contr\^oleur en mode externe (sur la droite): \\
 
 \begin{center}
-\includegraphics[scale=0.5]{flashII.png}
+\includegraphics[scale=0.5]{images/flashII.png}
 \end{center}
 
 Puis connecter le c\^able au contr\^oleur et au kilobot via les 6 trous pr\'esent sur le c\^ot\'e du kilobot.\\
