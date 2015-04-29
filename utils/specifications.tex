@@ -449,6 +449,14 @@ Ce projet se d\'ecoupe en 3 phases.\\
 \addcontentsline{toc}{section}{Phase I}
 
 La phase I ne comprenant que de la recherche documentaire et la prise en main de la plate-forme, la r\'epartition se deroula ainsi, Arnaud prit en main la plate-forme et Benjamin la recherche documentaire.\\
+Nous avons test\'e plusieurs algorithmes pour v\'erifier le bon fonctionnement des kilobots.\\
+Ces algorithmes sont les suivants : \\
+
+\smallskip
+Pour v\'erifier le bon fonctionnement des communications inter-kilobots, nous avons impl\'ement\'e un algorithme de synchronisation (type luciole/firefly).\\
+
+
+
 
 \section*{Phase II}\label{sec:name}
 \addcontentsline{toc}{section}{Phase II}
@@ -497,14 +505,14 @@ Nous utilisions (au d\'ebut du projet) pour nos simulations le logiciel \textit{
 Le contr\^oleur exploite un microcontr\^oleur Atmega m328p. Lors de la première connexion du contr\^oleur \`a un ordinateur Windows, Windows va automatiquement aller t\'el\'echarg\'e les drivers correspondant via windows update et les installer. Il n'y a pas d'autre op\'erations \`a faire. Sous Linux, aucun driver n'est n\'ecessaire.\\
 Si vous utilisez le firmware original de la K-Team, il vous faudra alors installer pour Windows un driver suppl\'ementaire afin de faire communiquer l'interface graphique avec le contr\^oleur. Pour cela, suivez les instructions fournis dans le manuel de la K-Team.\\
 
-\medskip
-Probl\`eme\\
-
-\fbox{
-\begin{minipage}{0.7\textwidth}
- Si le contr\^oleur n'est pas reconnus par windows, assurer vous qu'il appara\^it bien dans le gestionnaire de p\'eriph\'erique.\\ Il doit normalement appara\^itre comme un Serial Port (FTDI) et un AVRisp mkII (Jungo).
-\end{minipage}
-}
+\smallkip
+\begin{center}
+  \fcolorbox{red}{white}{
+    \begin{minipage}{0.7\textwidth}
+      Si le contr\^oleur n'est pas reconnus par windows, assurer vous qu'il appara\^it bien dans le gestionnaire de p\'eriph\'erique.\\ Il doit normalement appara\^itre comme un Serial Port (FTDI) et un AVRisp mkII (Jungo).
+    \end{minipage}
+  }
+\end{center}
 
 \subsection*{Flashage du contr\^oleur et des kilobots}\label{sec:name}
 \addcontentsline{toc}{subsection}{Flashage du contr\^oleur et des kilobots}
@@ -534,20 +542,27 @@ Enfin, ex\'ecuter la commande suivante :\\
 avrdude -p m328p -P usb -c avrispmkII -U "flash:w:bootloader.hex:i"
 \end{verbatim}
 
-\medskip
-Probl\`eme\\
+\smallskip
+\begin{center}
+  \fcolorbox{red}{white}{
+    \begin{minipage}{0.7\textwidth}
+      Si AvrDude ne reconnaît pas le contr\^oleur, assurez vous d'avoir positionn\'e le cavalier dans la bonne position. Sinon, la connexion entre le connecteur du câble et le kilobot est tr\`es sensible. Il faut que toutes les broches du connecteur soit en contact avec le kilobot. N'h\'esitez surtout pas \`a presser l\'eg\`erement le connecteur contre le kilobot et \`a le placer l\'eg\`erement en biais afin d'assurer la bonne connexion entre le connecteur et le robot.
+    \end{minipage}
+  }
+\end{center}
 
-\fbox{
-\begin{minipage}{0.7\textwidth}
- Si AvrDude ne reconnaît pas le contr\^oleur, assurez vous d'avoir positionn\'e le cavalier dans la bonne position. Sinon, la connexion entre le connecteur du câble et le kilobot est tr\`es sensible. Il faut que toutes les broches du connecteur soit en contact avec le kilobot. N'h\'esitez surtout pas \`a presser l\'eg\`erement le connecteur contre le kilobot et \`a le placer l\'eg\`erement en biais afin d'assurer la bonne connexion entre le connecteur et le robot.
-\end{minipage}
-}
+\newpage
+\section*{Codes Sources}\label{sec:name}
+\addcontentsline{toc}{section}{Codes Sources}
 
-%\subsection*{Chargement d'un nouveau firmware}\label{sec:name}
-%\addcontentsline{toc}{subsection}{Chargement d'un nouveau firmware}
+Code source de la synchronisation "luciole/firefly".\\
+\lstinputlisting[language=C]{../src/firefly.c}
 
-%\subsection*{Calibrage des kilobots}\label{sec:name}
-%\addcontentsline{toc}{subsection}{Calibrage des kilobots}
+Code source de l'orbit master.\\
+\lstinputlisting[language=C]{../src/orbit_master.c}
+
+Code source de l'orbit slave.\\
+\lstinputlisting[language=C]{../src/orbit_slave.c}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
