@@ -60,9 +60,9 @@
 
 \begin{minipage}{0.4\textwidth}
 \begin{flushleft} \large
-\emph{Auteur:}\\
+\emph{Auteurs:}\\
 Arnaud \textsc{Guermont} % Your name
-Benjamin \textsc{Bielle} % Your name
+\\Benjamin \textsc{Bielle} % Your name
 \end{flushleft}
 \end{minipage}
 ~
@@ -139,12 +139,12 @@ Il existe deux API de base pour la plate-forme Kilobot.\\
 
 \medskip
 Celle propos\'ee par \textit{\textbf{K-team}} (fournie par d\'efaut avec les robots) nous permet une moins grande libert\'e que celle de \textit{\textbf{Kilobotics}}.\\
-Donc notre \textit{\textbf{API}} se basera sur celle-ci car elle nous garantie une plus grande libert\'e, portabilit\'e et extensibilit\'e.
+Donc notre \textit{\textbf{API}} se basera sur celle-ci car elle nous garantit une plus grande libert\'e, portabilit\'e et extensibilit\'e.
 
 \section*{Veille Technologique}\label{sec:name}
 \addcontentsline{toc}{section}{Veille Technologique}
 
-Il existe plusieurs projets similaires aux kilobots, par exemple le projet \textit{\textbf{I-Swarm}}\footnote{http://www.hizook.com/blog/2009/08/29/i-swarm-micro-robots-realized-impressive-full-system-integration}, mais seul la plate-forme \textit{\textbf{Kilobot}} permet de manipuler des centaines de robots de mani\`ere r\'ealiste hors d'un simulateur (avec un prix convenable).\\
+Il existe plusieurs projets similaires aux kilobots, par exemple le projet \textit{\textbf{I-Swarm}}\footnote{http://www.hizook.com/blog/2009/08/29/i-swarm-micro-robots-realized-impressive-full-system-integration}, mais seule la plate-forme \textit{\textbf{Kilobot}} permet de manipuler des centaines de robots de mani\`ere r\'ealiste hors d'un simulateur (avec un prix convenable).\\
 Le projet \textit{\textbf{E-Swarm}}\footnote{http://www.e-swarm.org/research_main.php} propose un plate-forme int\'eressante mais le prix de chaque robot en fait une plate-forme non \'eligible pour ce projet.\\
 
 \begin{figure}[!h]
@@ -455,8 +455,41 @@ Ces algorithmes sont les suivants : \\
 \smallskip
 Pour v\'erifier le bon fonctionnement des communications inter-kilobots, nous avons impl\'ement\'e un algorithme de synchronisation (type luciole/firefly).\\
 
+\begin{center}
+  \rule{\linewidth}{.5pt}
+  \textbf{Luciole/Firefly}\\
+  \rule{\linewidth}{.5pt}
+\end{center}
+\underline{Legende} : \textbf{S} (Send) et \textbf{R} (Receive).\\
 
+\begin{table}[h]
+\begin{tabular}{lllll}
+\textbf{S :} & envoie un message $<$Horloge$>$ &  & \textbf{R :} & r\'eception d'un message $<$Horloge$>$                                                                                                                                                                             \\
+           &                                   &  &            & \begin{tabular}[c]{@{}l@{}}Si mon\_Horloge \textgreater Horloge            \\     décrémentation de mon\_Horloge d'une demi-période\\ Sinon    \\     incrémentation de mon\_Horloge d'une demi-période\end{tabular} \\
+\end{tabular}
+\end{table}
 
+\smallskip
+Pour v\'erifier le bon fonctionnement des communications inter-kilobots avec d\'eplacement, nous avons impl\'ement\'e un algorithme d'orbite.\\
+
+\begin{center}
+  \rule{\linewidth}{.5pt}
+  \textbf{Orbite}\\
+  \rule{\linewidth}{.5pt}
+\end{center}
+\underline{Legende} : \textbf{S} (Send) et \textbf{R} (Receive).\\
+
+\begin{table}[h]
+\begin{tabular}{lllll}
+\textit{Master} &                          &  & \textit{Slave} &                                                                                                                                                                                                                                                          \\
+                &                          &  &                &                                                                                                                                                                                                                                                          \\
+\textbf{S :}    & envoie un message $<$$>$ &  & \textbf{S :}   &                                                                                                                                                                                                                                                          \\
+\textbf{R :}    &                          &  & \textbf{R :}   & r\'eception d'un message $<>$                                                                                                                                                                                                               \\
+                &                          &  &                & \begin{tabular}[c]{@{}l@{}} Si distance \textgreater= distance\_max\\ tourner à droite\\ avancer tout droit\\ Sinon SI distance \textless= distance\_min\\      touner à gauche \\ avancer tout droit\\ Sinon\\ avancer tout droit\\\end{tabular}
+\end{tabular}
+\end{table}
+
+Le kilobot \textit{Master} reste immobile tandis que le kilobot \textit{Slave} orbite autour de lui.\\
 
 \section*{Phase II}\label{sec:name}
 \addcontentsline{toc}{section}{Phase II}
@@ -475,6 +508,9 @@ Cette version ne permet donc pas a un essaim en formation de suivre la lumi\`ere
 La seconce version de notre algorithme utilise l'algorithme de gradient afin de garder les kilobots en formation jusqu'\`a la source de lumi\`ere.\\
 Par exemple les kilobots ont une formation en A, et ils doivent garder cette forme jusqu'\`a la destination.\\
 \fi
+
+\section*{Phase III}\label{sec:name}
+\addcontentsline{toc}{section}{Phase III}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
