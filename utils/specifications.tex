@@ -246,10 +246,10 @@ Lorsqu'on impl\'emente des algorithmes collectifs, on d\'esire parfois les simul
 \subsubsection*{V-Rep}\label{subsubsec:name}
 \addcontentsline{toc}{subsubsection}{V-Rep}
 
-Pour cela, nous avons \`a notre disposition le simulateur V-Rep de la soci\'et\'e Coppelia Robotics qui est un simulateur sp\'ecialis\'e dans le domaine de la robotique. Il impl\'emente des mod\`eles 3d de l'ensemble des robots existants et il int\`egre aussi un cr\'eateur de mod\`ele 3d afin de pouvoir simuler des prototypes. Il dispose aussi d'un moteur physique permettant de v\'erifier la viabilit\'e de certains robots. Il utilise un langage de script (le Lua) pour programmer les robots et ainsi les faire \'evoluer dans l'environnement simul\'e. Il peut aussi \^etre coupl\'e avec de nombreuses interfaces via des API remotes.\\
+Pour cela, nous avons \`a notre disposition le simulateur \textit{\textbf{V-Rep}} de la soci\'et\'e \textit{\textbf{Coppelia Robotics}}\footnote{http://www.coppeliarobotics.com} qui est un simulateur sp\'ecialis\'e dans le domaine de la robotique. Il impl\'emente des mod\`eles 3d de l'ensemble des robots existants et il int\`egre aussi un cr\'eateur de mod\`ele 3d afin de pouvoir simuler des prototypes. Il dispose aussi d'un moteur physique permettant de v\'erifier la viabilit\'e de certains robots. Il utilise un langage de script (le Lua) pour programmer les robots et ainsi les faire \'evoluer dans l'environnement simul\'e. Il peut aussi \^etre coupl\'e avec de nombreuses interfaces via des API remotes.\\
 
 \medskip
-Le mod\`ele 3d des kilobots fut impl\'ement\'es par la K-Team dans le simulateur et permet la simulation de l'ensemble des fonctionnalit\'es des robots. Il existe deux impl\'ementations : avec et sans capteur de lumi\`ere. En effet, la simulation du capteur de lumi\`ere n\'ecessite des calculs suppl\'ementaires et allonge la dur\'ee de la simulation. Il n'est donc pas utile qu'il soit utiliser si l'algorithme n'en n'a pas besoin. \\
+Le mod\`ele 3d des kilobots fut impl\'ement\'es par la \textit{\textbf{K-Team}}\footnote{http://www.k-team.com/mobile-robotics-products/kilobot} dans le simulateur et permet la simulation de l'ensemble des fonctionnalit\'es des robots. Il existe deux impl\'ementations : avec et sans capteur de lumi\`ere. En effet, la simulation du capteur de lumi\`ere n\'ecessite des calculs suppl\'ementaires et allonge la dur\'ee de la simulation. Il n'est donc pas utile qu'il soit utiliser si l'algorithme n'en n'a pas besoin. \\
 Le contr\^oleur est aussi simul\'e dans V-Rep via son propre mod\`ele 3d. Il permet de lancer le programme, arr\^eter le programme en cours et aussi de conna\^itre le niveau de batterie simul\'e. \\
 L'ensemble de l'API de la K-Team est impl\'ement\'e dans le simulateur via un squelette de code inclus dans chaque script associ\'e \`a un objet kilobot.\\
 
@@ -275,7 +275,7 @@ Enfin, V-Rep est un simulateur orient\'e m\'ecanique. Il dispose en effet d'un m
 \addcontentsline{toc}{subsubsection}{KbSim}
 
 \medskip
-Nous avons alors cherché un autre simulateur et avons trouvé KbSim, un simulateur entièrement dédié aux kilobots et développé en python en utilisant la librairie pygame.\\
+Nous avons alors cherché un autre simulateur et avons trouvé \textit{\textbf{KbSim}}\footnote{https://github.com/ajhalme/kbsim}, un simulateur entièrement dédié aux kilobots et développé en python en utilisant la librairie pygame.\\
 Bien que n'utilisant pas les mêmes fichiers que les kilobots, sa programmation en python est aisée et permet une implémentation rapide des algorithmes dans le simulateur. Il offre aussi d'autre fonctionnalité comme par exemple l'affichage du rayon d'émission de chaque kilobot. Sa consommation plus faible en ressource et sa plus grande portabilité en font un simulateur plus adapté pour notre tâche que le simulateur V-Rep.\\
 
 \begin{figure}[!h]
@@ -291,7 +291,7 @@ Bien que n'utilisant pas les mêmes fichiers que les kilobots, sa programmation 
 \subsubsection*{K-Team}\label{subsubsec:name}
 \addcontentsline{toc}{subsubsection}{K-Team}
 
-Les kilobots sont un mod\`ele de robot d\'evelopp\'es par l'universit\'e d'Harvard. L'entreprise suisse K-Team Corporation les proposes \`a la vente et s'occupe de la fabrication et de l'assemblage. Ils fournissent les robots avec leur propre firmware d\'evelopp\'e en interne par la K-Team. \\
+Les kilobots sont un mod\`ele de robot d\'evelopp\'es par l'universit\'e d'Harvard\footnote{http://www.eecs.harvard.edu/ssr/projects/progSA/kilobot.html}. L'entreprise suisse \textit{\textbf{K-Team}}\footnote{http://www.k-team.com/mobile-robotics-products/kilobot} les proposes \`a la vente et s'occupe de la fabrication et de l'assemblage. Ils fournissent les robots avec leur propre firmware d\'evelopp\'e en interne par la K-Team. \\
 Ce firmware poss\`ede un inconv\'enient : il n'est compatible uniquement sous windows. \\
 En effet, pour que l'op\'erateur puisse charger le programme dans les kilobots, il doit passer par le contr\^oleur qui est l'interface entre l'ordinateur et les robots. Or, le driver du contr\^oleur est uniquement disponible pour Windows et la K-Team ne fournit pas les sources pour un portage sous Linux. \\
 De plus, nous avons rencontr\'es des probl\`emes lors de la calibration des moteurs avec le firmware d'origine. Ce dernier ne permet la calibration uniquement du moteur gauche ou du moteur droit mais pas des deux lorsqu'on souhaite avancer. Or, le positionnement des jambes de chaque kilobot n'\'etant pas parfaitement identique, nous avons besoin de valeurs diff\'erentes pour les deux moteur afin que le robot se d\'eplace en ligne droite.\\
@@ -299,7 +299,7 @@ De plus, nous avons rencontr\'es des probl\`emes lors de la calibration des mote
 \subsubsection*{Kilobotics}\label{subsubsec:name}
 \addcontentsline{toc}{subsubsection}{Kilobotics}
 
-Apr\`es recherche, nous d\'ecid\^ames d'utiliser le firmware kilobotics. Kilobotics est le nom de la librairie d\'evelopp\'e par l'universit\'e d'Harvard. Il est open-source et est plus r\'ecent et dispose d'un driver pour Linux. De plus, son utilisation limite les risques pour le mat\'erielle. Le contr\^oleur permet de charger les programmes dans les kilobots. Mais pour effectuer cela avec le firmware d'origine de la K-Team, il faut \`a chaque nouveau programme reprogrammer le microcontr\^oleur du contr\^oleur, ce qui implique le risque de se retrouver avec un microcontr\^oleur mal programmer et alors un contr\^oleur potentiellement hs. Le firmware kilobotics n\'ecessite lui de ne le reprogrammer qu'une seule fois, ce qui limite grandement les risques. \\
+Apr\`es recherche, nous d\'ecid\^ames d'utiliser le firmware \textit{\textbf{Kilobotics}}\footnote{https://www.kilobotics.com/}. Kilobotics est le nom de la librairie d\'evelopp\'e par l'universit\'e d'Harvard. Il est open-source et est plus r\'ecent et dispose d'un driver pour Linux. De plus, son utilisation limite les risques pour le mat\'erielle. Le contr\^oleur permet de charger les programmes dans les kilobots. Mais pour effectuer cela avec le firmware d'origine de la K-Team, il faut \`a chaque nouveau programme reprogrammer le microcontr\^oleur du contr\^oleur, ce qui implique le risque de se retrouver avec un microcontr\^oleur mal programmer et alors un contr\^oleur potentiellement hs. Le firmware kilobotics n\'ecessite lui de ne le reprogrammer qu'une seule fois, ce qui limite grandement les risques. \\
 En ce qui concerne la calibration, kilobotic permet via l'interface graphique (kilogui) de calibrer chaque moteur s\'epar\'ement mais aussi de leur attribuer des valeurs diff\'erentes pour le d\'eplacement en ligne droite. Kilogui propose aussi la possibilit\'e de rentrer directement les valeurs souhait\'es (entre 1 et 255) pour la puissance des moteurs. Enfin, il est possible d'affecter un identifiant \`a chaque robot qui sera stock\'e dans la m\'emoire EPROM.\\
 
 %\section*{de temps}\label{sec:name}
@@ -614,7 +614,7 @@ Le mat\'eriel se compose des kilobots, de transmetteur et d'un PC quelqu'il soit
 
 Nous utiliserons les logiciels fournis pour l'API Kilobotics pour le d\'eveloppement de notre API, notre gestionnaire de version sera Github.\\
 Le projet sera h\'eberg\'e sous l'organisation \textit{\textbf{LSDev8}}\footnote{https://github.com/LSDev8/}.\\
-Nous utilisions (au d\'ebut du projet) pour nos simulations le logiciel \textit{\textbf{V-Rep}}\footnote{http://www.coppeliarobotics.com} mais celui-ci se r\'ev\'ela trop contraignant dans son utilisation donc nous opt\^ames pour le logiciel \textit{\textbf{kbsim}}\footnote{https://github.com/ajhalme/kbsim} car celui-ci est un simulateur exclusivement pour kilobot (une copie de ce logiciel se trouve aussi sur l'organisation \textit{\textbf{LSDev8}}).\\
+Nous utilisions (au d\'ebut du projet) pour nos simulations le logiciel \textit{\textbf{V-Rep}}\footnote{http://www.coppeliarobotics.com} mais celui-ci se r\'ev\'ela trop contraignant dans son utilisation donc nous opt\^ames pour le logiciel \textit{\textbf{KbSim}}\footnote{https://github.com/ajhalme/kbsim} car celui-ci est un simulateur exclusivement pour kilobot (une copie de ce logiciel se trouve aussi sur l'organisation \textit{\textbf{LSDev8}}).\\
 
 
 \section*{Tutoriels}\label{sec:name}
