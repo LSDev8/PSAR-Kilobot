@@ -163,10 +163,10 @@ Le projet \textit{\textbf{E-Swarm}}\footnote{http://www.e-swarm.org/research_mai
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
-%                          CONTRAINTES                           %
+%                          SPECIFICATIONS                        %
 %                                                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Contraintes}
+\chapter{Sp\'ecifications}
 
 \section*{Mat\'erielles}\label{sec:name}
 \addcontentsline{toc}{section}{Mat\'erielles}
@@ -302,17 +302,150 @@ De plus, nous avons rencontr\'es des probl\`emes lors de la calibration des mote
 Apr\`es recherche, nous d\'ecid\^ames d'utiliser le firmware \textit{\textbf{Kilobotics}}\footnote{https://www.kilobotics.com/}. Kilobotics est le nom de la librairie d\'evelopp\'e par l'universit\'e d'Harvard. Il est open-source et est plus r\'ecent et dispose d'un driver pour Linux. De plus, son utilisation limite les risques pour le mat\'erielle. Le contr\^oleur permet de charger les programmes dans les kilobots. Mais pour effectuer cela avec le firmware d'origine de la K-Team, il faut \`a chaque nouveau programme reprogrammer le microcontr\^oleur du contr\^oleur, ce qui implique le risque de se retrouver avec un microcontr\^oleur mal programmer et alors un contr\^oleur potentiellement hs. Le firmware kilobotics n\'ecessite lui de ne le reprogrammer qu'une seule fois, ce qui limite grandement les risques. \\
 En ce qui concerne la calibration, kilobotic permet via l'interface graphique (kilogui) de calibrer chaque moteur s\'epar\'ement mais aussi de leur attribuer des valeurs diff\'erentes pour le d\'eplacement en ligne droite. Kilogui propose aussi la possibilit\'e de rentrer directement les valeurs souhait\'es (entre 1 et 255) pour la puissance des moteurs. Enfin, il est possible d'affecter un identifiant \`a chaque robot qui sera stock\'e dans la m\'emoire EPROM.\\
 
-%\section*{de temps}\label{sec:name}
-%\addcontentsline{toc}{section}{De temps}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                %
+%                           PHASE I                              %
+%                                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Phase I}
 
-%\textit{A COMPLETER}
+Ce projet se d\'ecoupe en 3 phases.
+
+\begin{enumerate}[{Phase}-1 ]
+\item \textit{\textbf{Recherche Documentaire et Prise en main}}.
+\item \textit{\textbf{Recherche d'un bio-algorithme et d\'eveloppement}}.
+\item \textit{\textbf{Impl\'ementation d'un modele de robot avec les kilobots}}.
+\end{enumerate}
+
+\bigskip
+La phase I ne comprenant que de la recherche documentaire et la prise en main de la plate-forme, la r\'epartition se deroula ainsi, Arnaud prit en main la plate-forme et Benjamin la recherche documentaire.\\
+Pour la prise en main de la plate-forme, deux algorithmes fut choisis mettant chacun en scène une ou plusieurs capacités: la locomotion et la communication.\\
+Le premier algorithme est celui de l'orbite. Il permet de déplacer de façon circulaire un kilobot autour d'un point représenter par un autre robot.\\
+Le second met en avant la communication entre eux et se nomme firefly. Il réalise une synchronisation de plusieurs horloges (ici celle de plusieurs robots) via échange de messages.\\
+
+\section*{Orbite}\label{sec:name}
+\addcontentsline{toc}{section}{Orbite}
+
+L'orbite reprend le principe des satellites naturelles comme la lune qui tourne autour de la terre. Chaque astre prend ici la forme d'un kilobot. Le premier va effectuer une révolution autour du second pendant que ce dernier lui enverra des messages en continu. L'emploi d'un second kilobot est indispensable pour permettre à un autre d'avancer en formant un cercle. Sans point de repère, il est impossible d'en effectuer un correctement, les déplacements par vibrations étant trop imprécis et entraînant des mouvements non désirés. La surface sur lequel évolue le robot rajoute encore un facteur imprévisible.
+
+Un kilobot va rester en position stationnaire et envoyer des messages en continue. Le contenu de ceux-ci est d'aucune importance. Ils ne servent qu'a transmettre la distance qui sépare l’émetteur des récepteurs.\\
+Le second kilobot va lui avancer en continue et recevoir les messages du premier. A chaque réception, il va calculer la distance qui le sépare de l'émetteur et ainsi pouvoir faire des corrections de trajectoire. Il avance ainsi tout droit tant qu'il se trouve dans les bornes définis dans le programme. Si il se trouve à une distance inférieur à celle-ci, il tournera à gauche jusqu’à de nouveau être dans les bornes. Il effectuera la même opérations si il est à une distance supérieur, mais vers la droite.\\
+Ainsi, il va naturellement réaliser une révolution autour du kilobot fixe en tournant autour.\\
+
+\begin{center}
+  \rule{\linewidth}{.5pt}
+  \textbf{Orbite}\\
+  \rule{\linewidth}{.5pt}
+\end{center}
+\underline{Legende} : \textbf{S} (Send) et \textbf{R} (Receive).\\
+
+\begin{table}[h]
+\begin{tabular}{lllll}
+\textit{Master} &                          &  & \textit{Slave} &                                                                                                                                                                                                                                                          \\
+                &                          &  &                &                                                                                                                                                                                                                                                          \\
+\textbf{S :}    & envoie un message $<$$>$ &  & \textbf{S :}   &                                                                                                                                                                                                                                                          \\
+\textbf{R :}    &                          &  & \textbf{R :}   & r\'eception d'un message $<>$                                                                                                                                                                                                               \\
+                &                          &  &                & \begin{tabular}[c]{@{}l@{}} Si distance \textgreater= distance\_max\\ tourner à droite\\ avancer tout droit\\ Sinon SI distance \textless= distance\_min\\      touner à gauche \\ avancer tout droit\\ Sinon\\ avancer tout droit\\ Fin Si \end{tabular}
+\end{tabular}
+\end{table}
+
+Le kilobot \textit{Master} reste immobile tandis que le kilobot \textit{Slave} orbite autour de lui.\\
+
+\section*{Firefly}\label{sec:name}
+\addcontentsline{toc}{section}{Firefly}
+
+L'algorithme firefly est un bio-algorithme s'inspirant du comportement des lucioles dans la nature. Quand elles se retrouvent en groupe, elles sont capables de "clignoter" de manière synchronisé.
+Les kilobots font de même avec cet algorithme.\\
+
+Pour permettre possible la synchronisation de plusieurs individus, nous implémentons une horloge logique dans chacun. La synchronisation va se réaliser en collectant les horloges contenus dans les messages des voisins afin de déterminer la moyenne du nombre de tick d'horloge qui sont en avance (ou en retard).\\
+
+Le kilobot dispose donc d'un tableau dont les indexes sont le nombre de tick en retard ou en avance par rapport à ces voisins.\\
+Exemple : Si la différence entre son horloge et l'horloge reçu dans un message est de 8 ticks, alors il incrémentera de 1 la valeur contenu à l'index 8 du tableau.\\
+Le tableau est ainsi mis à jours à chaque réception d'un message seulement si la différence entre l'horloge de l’émetteur et celle du récepteur est inférieur à la moitié de la période d'horloge. Cette prévention permet d'éviter que deux kilobots voisins se mettent à jour en même temps.\\
+
+A chaque itération de la boucle principale du programme, la moyenne de la somme des ticks enregistrés dans le tableau est effectué (tick\_offset) et celui-ci remis à zéro. La différence entre l'horloge local (kilo\_ticks) et celles reçus est calculé :\\
+
+modulo\_clock = ((kilo\_ticks – tick\_offset) / 4) \% 32\\
+
+Si modulo\_clock est égale à zéro, le robot peut alors faire clignoter sa led. 
+Ainsi la synchronisation se fait au fil des cycles en réduisant l'écart entre chaque horloge.
+
+\begin{center}
+  \rule{\linewidth}{.5pt}
+  \textbf{Luciole/Firefly}\\
+  \rule{\linewidth}{.5pt}
+\end{center}
+\underline{Legende} : \textbf{S} (Send) et \textbf{R} (Receive).\\
+
+\begin{table}[h]
+\begin{tabular}{lllll}
+\textbf{S :} & envoie un message $<$Horloge$>$ &  & \textbf{R :} & r\'eception d'un message $<$Horloge$>$                                                                                                                                                                             \\
+           &                                   &  &            & \begin{tabular}[c]{@{}l@{}}Si mon\_Horloge \textgreater Horloge            \\     décrémentation de mon\_Horloge d'une demi-période\\ Sinon    \\     incrémentation de mon\_Horloge d'une demi-période\\ Fin Si\end{tabular} \\
+\end{tabular}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                %
+%                           PHASE II                             %
+%                                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Phase II}
+
+
+La phase II demandant plus de r\'eflexion, nous m\^imes nos comp\'etences acquises \`a la premi\`ere phase en commun afin de proposer un bio-algorithme digne d'int\'er\^et.
+
+\section*{Phototaxis}\label{sec:name}
+\addcontentsline{toc}{section}{Phototaxis}
+
+Notre bio-algorithme se base sur le principe de phototaxis.\\
+
+\smallskip
+\textit{R\'eaction de locomotion d'organismes mobiles provoqu\'ee par la lumi\`ere et qui les porte soit \`a s'en approcher (phototaxie positive), soit \`a s'en \'eloigner (phototaxie n\'egative).}\\
+
+\smallskip
+La premi\`ere version de notre algorithme ne permet pas une entraide des kilobots, c'est \`a dire que chaque robot suit son programme sans se souci\'e des autres.\\
+Cette version ne permet donc pas a un essaim en formation de suivre la lumi\`ere tout en gardant cette formation.\\
+L'algorithme se d\'eroule ainsi, chaque robot capte la lumi\`ere ambiante (la lumi\`ere ambiante doit \^etre faible afin de ne pas g\^ener les capteurs des kilobots dans la d\'etection de la source cible de lumi\`ere), si la source de lumi\`ere d\'etect\'ee par le capteur provient de la droite on tourne \`a droite et inversement, apr\`es chaque demi-tour on avance tout droit pendant un certain laps de temps.\\
+Les kilobots ne communiquent jamais ensemble.\\
+
+\newpage
+\begin{center}
+  \rule{\linewidth}{.5pt}
+  \textbf{Phototaxis}\\
+  \rule{\linewidth}{.5pt}
+\end{center}
+
+\begin{verbatim}
+var currentLight <- indice de lumière ambiante.
+var currentDir   <- indice de direction.
+
+Tant que vrai   
+     réception de la lumière
+
+     Si currentLight > barrière haute
+     alors
+        -tourner à droite
+        -currentDir <- droite;
+     Fin Si
+ 
+     Si currentLight < barrière basse
+     alors
+        -tourner à gauche
+        -currentDir <- gauche;
+     Fin Si
+Fin Tant que
+\end{verbatim}
+
+%La seconce version de notre algorithme utilise l'algorithme de gradient afin de garder les kilobots en formation jusqu'\`a la source de lumi\`ere.\\
+%Par exemple les kilobots ont une formation en A, et ils doivent garder cette forme jusqu'\`a la destination.\\
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
 %                           LE PRODUIT                           %
 %                                                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{L'API}
+\chapter{Phase III}
 
 \section*{Description des attentes}\label{sec:name}
 \addcontentsline{toc}{section}{Description des attentes}
@@ -461,141 +594,7 @@ La premi\`iere version de l'API ne proposera que les m\'ethodes suivantes :
 \item[toPosition] qui permet \`a un robot de se rendre aux coordonn\'ees en param\`etre.
 \end{description}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                                                %
-%                          ORGANISATION                          %
-%                                                                %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{D\'eroulement du projet}
-
-Ce projet se d\'ecoupe en 3 phases.\\
-
-\begin{enumerate}[{Phase}-I ]
-\item \textit{\textbf{Recherche Documentaire et Prise en main}}.
-\item \textit{\textbf{Recherche d'un bio-algorithme et d\'eveloppement}}.
-\item \textit{\textbf{Impl\'ementation d'un modele de robot avec les kilobots}}.
-\end{enumerate}
-
-\medskip
-
-\section*{Phase I}\label{sec:name}
-\addcontentsline{toc}{section}{Phase I}
-
-La phase I ne comprenant que de la recherche documentaire et la prise en main de la plate-forme, la r\'epartition se deroula ainsi, Arnaud prit en main la plate-forme et Benjamin la recherche documentaire.\\
-Pour la prise en main de la plate-forme, deux algorithmes fut choisis mettant chacun en scène une ou plusieurs capacités: la locomotion et la communication.\\
-Le premier algorithme est celui de l'orbite. Il permet de déplacer de façon circulaire un kilobot autour d'un point représenter par un autre robot.\\
-Le second met en avant la communication entre eux et se nomme firefly. Il réalise une synchronisation de plusieurs horloges (ici celle de plusieurs robots) via échange de messages.\\
-
-\subsection*{Orbite}\label{subsec:name}
-\addcontentsline{toc}{subsection}{Orbite}
-
-L'orbite reprend le principe des satellites naturelles comme la lune qui tourne autour de la terre. Chaque astre prend ici la forme d'un kilobot. Le premier va effectuer une révolution autour du second pendant que ce dernier lui enverra des messages en continu. L'emploi d'un second kilobot est indispensable pour permettre à un autre d'avancer en formant un cercle. Sans point de repère, il est impossible d'en effectuer un correctement, les déplacements par vibrations étant trop imprécis et entraînant des mouvements non désirés. La surface sur lequel évolue le robot rajoute encore un facteur imprévisible.
-
-Un kilobot va rester en position stationnaire et envoyer des messages en continue. Le contenu de ceux-ci est d'aucune importance. Ils ne servent qu'a transmettre la distance qui sépare l’émetteur des récepteurs.\\
-Le second kilobot va lui avancer en continue et recevoir les messages du premier. A chaque réception, il va calculer la distance qui le sépare de l'émetteur et ainsi pouvoir faire des corrections de trajectoire. Il avance ainsi tout droit tant qu'il se trouve dans les bornes définis dans le programme. Si il se trouve à une distance inférieur à celle-ci, il tournera à gauche jusqu’à de nouveau être dans les bornes. Il effectuera la même opérations si il est à une distance supérieur, mais vers la droite.\\
-Ainsi, il va naturellement réaliser une révolution autour du kilobot fixe en tournant autour.\\
-
-\begin{center}
-  \rule{\linewidth}{.5pt}
-  \textbf{Orbite}\\
-  \rule{\linewidth}{.5pt}
-\end{center}
-\underline{Legende} : \textbf{S} (Send) et \textbf{R} (Receive).\\
-
-\begin{table}[h]
-\begin{tabular}{lllll}
-\textit{Master} &                          &  & \textit{Slave} &                                                                                                                                                                                                                                                          \\
-                &                          &  &                &                                                                                                                                                                                                                                                          \\
-\textbf{S :}    & envoie un message $<$$>$ &  & \textbf{S :}   &                                                                                                                                                                                                                                                          \\
-\textbf{R :}    &                          &  & \textbf{R :}   & r\'eception d'un message $<>$                                                                                                                                                                                                               \\
-                &                          &  &                & \begin{tabular}[c]{@{}l@{}} Si distance \textgreater= distance\_max\\ tourner à droite\\ avancer tout droit\\ Sinon SI distance \textless= distance\_min\\      touner à gauche \\ avancer tout droit\\ Sinon\\ avancer tout droit\\ Fin Si \end{tabular}
-\end{tabular}
-\end{table}
-
-Le kilobot \textit{Master} reste immobile tandis que le kilobot \textit{Slave} orbite autour de lui.\\
-
-\subsection*{Firefly}\label{subsec:name}
-\addcontentsline{toc}{subsection}{Firefly}
-
-L'algorithme firefly est un bio-algorithme s'inspirant du comportement des lucioles dans la nature. Quand elles se retrouvent en groupe, elles sont capables de "clignoter" de manière synchronisé.
-Les kilobots font de même avec cet algorithme.\\
-
-Pour permettre possible la synchronisation de plusieurs individus, nous implémentons une horloge logique dans chacun. La synchronisation va se réaliser en collectant les horloges contenus dans les messages des voisins afin de déterminer la moyenne du nombre de tick d'horloge qui sont en avance (ou en retard).\\
-
-Le kilobot dispose donc d'un tableau dont les indexes sont le nombre de tick en retard ou en avance par rapport à ces voisins.\\
-Exemple : Si la différence entre son horloge et l'horloge reçu dans un message est de 8 ticks, alors il incrémentera de 1 la valeur contenu à l'index 8 du tableau.\\
-Le tableau est ainsi mis à jours à chaque réception d'un message seulement si la différence entre l'horloge de l’émetteur et celle du récepteur est inférieur à la moitié de la période d'horloge. Cette prévention permet d'éviter que deux kilobots voisins se mettent à jour en même temps.\\
-
-A chaque itération de la boucle principale du programme, la moyenne de la somme des ticks enregistrés dans le tableau est effectué (tick\_offset) et celui-ci remis à zéro. La différence entre l'horloge local (kilo\_ticks) et celles reçus est calculé :\\
-
-modulo\_clock = ((kilo\_ticks – tick\_offset) / 4) \% 32\\
-
-Si modulo\_clock est égale à zéro, le robot peut alors faire clignoter sa led. 
-Ainsi la synchronisation se fait au fil des cycles en réduisant l'écart entre chaque horloge.
-
-\begin{center}
-  \rule{\linewidth}{.5pt}
-  \textbf{Luciole/Firefly}\\
-  \rule{\linewidth}{.5pt}
-\end{center}
-\underline{Legende} : \textbf{S} (Send) et \textbf{R} (Receive).\\
-
-\begin{table}[h]
-\begin{tabular}{lllll}
-\textbf{S :} & envoie un message $<$Horloge$>$ &  & \textbf{R :} & r\'eception d'un message $<$Horloge$>$                                                                                                                                                                             \\
-           &                                   &  &            & \begin{tabular}[c]{@{}l@{}}Si mon\_Horloge \textgreater Horloge            \\     décrémentation de mon\_Horloge d'une demi-période\\ Sinon    \\     incrémentation de mon\_Horloge d'une demi-période\\ Fin Si\end{tabular} \\
-\end{tabular}
-\end{table}
-
-\section*{Phase II}\label{sec:name}
-\addcontentsline{toc}{section}{Phase II}
-
-La phase II demandant plus de r\'eflexion, nous m\^imes nos comp\'etences acquises \`a la premi\`ere phase en commun afin de proposer un bio-algorithme digne d'int\'er\^et.\\
-Notre bio-algorithme se base sur le principe de phototaxis.\\
-
-\smallskip
-\textit{R\'eaction de locomotion d'organismes mobiles provoqu\'ee par la lumi\`ere et qui les porte soit \`a s'en approcher (phototaxie positive), soit \`a s'en \'eloigner (phototaxie n\'egative).}\\
-
-\smallskip
-La premi\`ere version de notre algorithme ne permet pas une entraide des kilobots, c'est \`a dire que chaque robot suit son programme sans se souci\'e des autres.\\
-Cette version ne permet donc pas a un essaim en formation de suivre la lumi\`ere tout en gardant cette formation.\\
-L'algorithme se d\'eroule ainsi, chaque robot capte la lumi\`ere ambiante (la lumi\`ere ambiante doit \^etre faible afin de ne pas g\^ener les capteurs des kilobots dans la d\'etection de la source cible de lumi\`ere), si la source de lumi\`ere d\'etect\'ee par le capteur provient de la droite on tourne \`a droite et inversement, apr\`es chaque demi-tour on avance tout droit pendant un certain laps de temps.\\
-Les kilobots ne communiquent jamais ensemble.\\
-
-\newpage
-\begin{center}
-  \rule{\linewidth}{.5pt}
-  \textbf{Phototaxis}\\
-  \rule{\linewidth}{.5pt}
-\end{center}
-
-\begin{verbatim}
-var currentLight <- indice de lumière ambiante.
-var currentDir   <- indice de direction.
-
-Tant que vrai   
-     réception de la lumière
-
-     Si currentLight > barrière haute
-     alors
-        -tourner à droite
-        -currentDir <- droite;
-     Fin Si
- 
-     Si currentLight < barrière basse
-     alors
-        -tourner à gauche
-        -currentDir <- gauche;
-     Fin Si
-Fin Tant que
-\end{verbatim}
-
-%La seconce version de notre algorithme utilise l'algorithme de gradient afin de garder les kilobots en formation jusqu'\`a la source de lumi\`ere.\\
-%Par exemple les kilobots ont une formation en A, et ils doivent garder cette forme jusqu'\`a la destination.\\
-
-
-\section*{Phase III}\label{sec:name}
-\addcontentsline{toc}{section}{Phase III}
+%a completer
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
@@ -692,6 +691,19 @@ Les kilobots peuvent être rechargés via le chargeur de la K-Team. Pour cela, p
     \begin{minipage}{1.0\textwidth}
       Attention, en fonction de la version de kilogui dont vous disposez, il se peut que vous ne disposiez pas du boutton charge. Il existe deux version de kilogui: La version sous format .deb contient la calibration mais pas le mode charge. Il faut donc récuperer les sources de kilogui et les compilers vous-même.\\
       Attention, les sources de kilogui ne contiennent pas la calibration. Il faut donc utiliser les deux versions en fonction de l'action souhaité (calibration ou chargement).
+    \end{minipage}
+  }
+\end{center}
+
+\subsection*{Compilation d'un programme pour les kilobots}\label{sec:name}
+\addcontentsline{toc}{subsection}{Compilation d'un programme pour les kilobots}
+
+Pour compiler un programme pour la plate-forme Kilobot, il suffit de changer dans le Makefile la valeur de la variable \textit{EXEC} en debut de fichier par le nom du fichier \`a compiler.\\
+
+\begin{center}
+  \fcolorbox{red}{white}{
+    \begin{minipage}{1.0\textwidth}
+      Attention, si la compilation \'echoue veuillez \`a v\'erifier si les logiciels suivant sont install\'es : \textbf{avr-libc}, \textbf{gcc-avr} et \textbf{avrdude}.\\
     \end{minipage}
   }
 \end{center}
