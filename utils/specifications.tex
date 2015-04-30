@@ -1,6 +1,6 @@
 \documentclass[a4paper,8pt]{report}
 
-%\usepackage[utf8]
+\usepackage[utf8]{inputenc}
 \usepackage[latin1]{inputenc}
 \usepackage[francais]{babel}
 %\usepackage[T1]{fontenc}
@@ -197,7 +197,7 @@ Le calcul de la distance entre un robot et un autre se fait via l'envoi et la r\
 \addcontentsline{toc}{subsection}{D\'eplacement}
 
 L'une des principales capacit\'es des robots est de pouvoir se mouvoir dans leur environnement. L'une des solutions les plus simples et efficace est d'utiliser un design \`a deux roues, chaque roue \'etant contr\^ol\'e par un moteur. Mais cette solution est aussi tr\`es ch\`ere et ne permettra pas de r\'ealiser un robot \`a bas co\^uts. \\
-Pour y rem\'edier, les kilobots disposent de trois jambes rigides et de deux moteurs \`a vibration dispos\'e de chaque c\^ot\'es du robot. Lorsqu'un des moteurs est activ\'es, il g\'en\`ere une force centrip\`ete qui est convertis en une force vers l'avant transmise \`a la jambe situ\'e en dessous du moteur. Gr\^ace au positionnement d\'ecentr\'e de chaque moteur, la mise en marche de l'un ou l'autre va causer une rotation vers la gauche ou la droite en fonction du moteur. En activant les deux moteurs en m\^eme temps et en contr\^olant la magnitude de leur vibration, ils est alors possible de faire avancer le robot en ligne droite vers l'avant. Il peut ainsi se d\'eplacer \`a une vitesse d'environs 1 cm/s et pivoter \`a environs 45°/s.\\
+Pour y rem\'edier, les kilobots disposent de trois jambes rigides et de deux moteurs \`a vibration dispos\'e de chaque c\^ot\'es du robot. Lorsqu'un des moteurs est activ\'es, il g\'en\`ere une force centrip\`ete qui est convertis en une force vers l'avant transmise \`a la jambe situ\'e en dessous du moteur. Gr\^ace au positionnement d\'ecentr\'e de chaque moteur, la mise en marche de l'un ou l'autre va causer une rotation vers la gauche ou la droite en fonction du moteur. En activant les deux moteurs en m\^eme temps et en contr\^olant la magnitude de leur vibration, ils est alors possible de faire avancer le robot en ligne droite vers l'avant. Il peut ainsi se d\'eplacer \`a une vitesse d'environs 1 cm/s et pivoter \`a environs 45Â°/s.\\
 
 \subsection*{Contr\^ole des robots par l'op\'erateur}\label{subsec:name}
 \addcontentsline{toc}{subsection}{Contr\^ole des robots par l'op\'erateur}
@@ -449,28 +449,20 @@ Ce projet se d\'ecoupe en 3 phases.\\
 \addcontentsline{toc}{section}{Phase I}
 
 La phase I ne comprenant que de la recherche documentaire et la prise en main de la plate-forme, la r\'epartition se deroula ainsi, Arnaud prit en main la plate-forme et Benjamin la recherche documentaire.\\
-Nous avons test\'e plusieurs algorithmes pour v\'erifier le bon fonctionnement des kilobots.\\
-Ces algorithmes sont les suivants : \\
+Pour la prise en main de la plate-forme, deux algorithmes fut choisis mettant chacun en scène une ou plusieurs capacités: la locomotion et la communication.\\
+Le premier algorithme est celui de l'orbite. Il permet de déplacer de façon circulaire un kilobot autour d'un point représenter par un autre robot.\\
+Le second met en avant la communication entre eux et se nomme firefly. Il réalise une synchronisation de plusieurs horloges (ici celle de plusieurs robots) via échange de messages.\\
 
-\smallskip
-Pour v\'erifier le bon fonctionnement des communications inter-kilobots, nous avons impl\'ement\'e un algorithme de synchronisation (type luciole/firefly).\\
+\subsection*{Orbite}\label{subsec:name}
+\addcontentsline{toc}{subsection}{Orbite}
 
-\begin{center}
-  \rule{\linewidth}{.5pt}
-  \textbf{Luciole/Firefly}\\
-  \rule{\linewidth}{.5pt}
-\end{center}
-\underline{Legende} : \textbf{S} (Send) et \textbf{R} (Receive).\\
+L'orbite reprend le principe des satellites naturelles comme la lune qui tourne autour de la terre. Chaque astre prend ici la forme d'un kilobot. Le premier va effectuer une révolution autour du second pendant que ce dernier lui enverra des messages en continu. L'emploi d'un second kilobot est indispensable pour permettre à un autre d'avancer en formant un cercle. Sans point de repère, il est impossible d'en effectuer un correctement, les déplacements par vibrations étant trop imprécis et entraînant des mouvements non désirés. La surface sur lequel évolue le robot rajoute encore un facteur imprévisible.
 
-\begin{table}[h]
-\begin{tabular}{lllll}
-\textbf{S :} & envoie un message $<$Horloge$>$ &  & \textbf{R :} & r\'eception d'un message $<$Horloge$>$                                                                                                                                                                             \\
-           &                                   &  &            & \begin{tabular}[c]{@{}l@{}}Si mon\_Horloge \textgreater Horloge            \\     d�cr�mentation de mon\_Horloge d'une demi-p�riode\\ Sinon    \\     incr�mentation de mon\_Horloge d'une demi-p�riode\\ Fin Si\end{tabular} \\
-\end{tabular}
-\end{table}
+\subsubsection{Principe de l'algorithme}\label{subsubsec:name}
 
-\smallskip
-Pour v\'erifier le bon fonctionnement des communications inter-kilobots avec d\'eplacement, nous avons impl\'ement\'e un algorithme d'orbite.\\
+Un kilobot va rester en position stationnaire et envoyer des messages en continue. Le contenu de ceux-ci est d'aucune importance. Ils ne servent qu'a transmettre la distance qui sépare l’émetteur des récepteurs.\\
+Le second kilobot va lui avancer en continue et recevoir les messages du premier. A chaque réception, il va calculer la distance qui le sépare de l'émetteur et ainsi pouvoir faire des corrections de trajectoire. Il avance ainsi tout droit tant qu'il se trouve dans les bornes définis dans le programme. Si il se trouve à une distance inférieur à celle-ci, il tournera à gauche jusqu’à de nouveau être dans les bornes. Il effectuera la même opérations si il est à une distance supérieur, mais vers la droite.\\
+Ainsi, il va naturellement réaliser une révolution autour du kilobot fixe en tournant autour.\\
 
 \begin{center}
   \rule{\linewidth}{.5pt}
@@ -485,11 +477,44 @@ Pour v\'erifier le bon fonctionnement des communications inter-kilobots avec d\'
                 &                          &  &                &                                                                                                                                                                                                                                                          \\
 \textbf{S :}    & envoie un message $<$$>$ &  & \textbf{S :}   &                                                                                                                                                                                                                                                          \\
 \textbf{R :}    &                          &  & \textbf{R :}   & r\'eception d'un message $<>$                                                                                                                                                                                                               \\
-                &                          &  &                & \begin{tabular}[c]{@{}l@{}} Si distance \textgreater= distance\_max\\ tourner � droite\\ avancer tout droit\\ Sinon SI distance \textless= distance\_min\\      touner � gauche \\ avancer tout droit\\ Sinon\\ avancer tout droit\\ Fin Si \end{tabular}
+                &                          &  &                & \begin{tabular}[c]{@{}l@{}} Si distance \textgreater= distance\_max\\ tourner à droite\\ avancer tout droit\\ Sinon SI distance \textless= distance\_min\\      touner à gauche \\ avancer tout droit\\ Sinon\\ avancer tout droit\\ Fin Si \end{tabular}
 \end{tabular}
 \end{table}
 
 Le kilobot \textit{Master} reste immobile tandis que le kilobot \textit{Slave} orbite autour de lui.\\
+
+\subsection*{Firefly}\label{subsec:name}
+\addcontentsline{toc}{subsection}{Firefly}
+
+L'algorithme firefly est un bio-algorithme s'inspirant du comportement des lucioles dans la nature. Quand elles se retrouvent en groupe, elles sont capables de "clignoter" de manière synchronisé.
+Les kilobots font de même avec cet algorithme.\\
+
+Pour permettre possible la synchronisation de plusieurs individus, nous implémentons une horloge logique dans chacun. La synchronisation va se réaliser en collectant les horloges contenus dans les messages des voisins afin de déterminer la moyenne du nombre de tick d'horloge qui sont en avance (ou en retard).\\
+
+Le kilobot dispose donc d'un tableau dont les indexes sont le nombre de tick en retard ou en avance par rapport à ces voisins.\\
+Exemple : Si la différence entre son horloge et l'horloge reçu dans un message est de 8 ticks, alors il incrémentera de 1 la valeur contenu à l'index 8 du tableau.\\
+Le tableau est ainsi mis à jours à chaque réception d'un message seulement si la différence entre l'horloge de l’émetteur et celle du récepteur est inférieur à la moitié de la période d'horloge. Cette prévention permet d'éviter que deux kilobots voisins se mettent à jour en même temps.\\
+
+A chaque itération de la boucle principale du programme, la moyenne de la somme des ticks enregistrés dans le tableau est effectué (tick\_offset) et celui-ci remis à zéro. La différence entre l'horloge local (kilo\_ticks) et celles reçus est calculé :\\
+
+modulo\_clock = ((kilo\_ticks – tick\_offset) / 4) \% 32\\
+
+Si modulo\_clock est égale à zéro, le robot peut alors faire clignoter sa led. 
+Ainsi la synchronisation se fait au fil des cycles en réduisant l'écart entre chaque horloge.
+
+\begin{center}
+  \rule{\linewidth}{.5pt}
+  \textbf{Luciole/Firefly}\\
+  \rule{\linewidth}{.5pt}
+\end{center}
+\underline{Legende} : \textbf{S} (Send) et \textbf{R} (Receive).\\
+
+\begin{table}[h]
+\begin{tabular}{lllll}
+\textbf{S :} & envoie un message $<$Horloge$>$ &  & \textbf{R :} & r\'eception d'un message $<$Horloge$>$                                                                                                                                                                             \\
+           &                                   &  &            & \begin{tabular}[c]{@{}l@{}}Si mon\_Horloge \textgreater Horloge            \\     décrémentation de mon\_Horloge d'une demi-période\\ Sinon    \\     incrémentation de mon\_Horloge d'une demi-période\\ Fin Si\end{tabular} \\
+\end{tabular}
+\end{table}
 
 \section*{Phase II}\label{sec:name}
 \addcontentsline{toc}{section}{Phase II}
@@ -514,21 +539,21 @@ Les kilobots ne communiquent jamais ensemble.\\
 \end{center}
 
 \begin{verbatim}
-var currentLight <- indice de lumi�re ambiante.
+var currentLight <- indice de lumière ambiante.
 var currentDir   <- indice de direction.
 
 Tant que vrai   
-     r�ception de la lumi�re
+     réception de la lumière
 
-     Si currentLight > barri�re haute
+     Si currentLight > barrière haute
      alors
-        -tourner � droite
+        -tourner à droite
         -currentDir <- droite;
      Fin Si
  
-     Si currentLight < barri�re basse
+     Si currentLight < barrière basse
      alors
-        -tourner � gauche
+        -tourner à gauche
         -currentDir <- gauche;
      Fin Si
 Fin Tant que
@@ -567,7 +592,7 @@ Nous utilisions (au d\'ebut du projet) pour nos simulations le logiciel \textit{
 \subsection*{Installation du contr\^oleur}\label{sec:name}
 \addcontentsline{toc}{subsection}{Installation du contr\^oleur}
 
-Le contr\^oleur exploite un microcontr\^oleur Atmega m328p. Lors de la premi�re connexion du contr\^oleur \`a un ordinateur Windows, Windows va automatiquement aller t\'el\'echarg\'e les drivers correspondant via windows update et les installer. Il n'y a pas d'autre op\'erations \`a faire. Sous Linux, aucun driver n'est n\'ecessaire.\\
+Le contr\^oleur exploite un microcontr\^oleur Atmega m328p. Lors de la première connexion du contr\^oleur \`a un ordinateur Windows, Windows va automatiquement aller t\'el\'echarg\'e les drivers correspondant via windows update et les installer. Il n'y a pas d'autre op\'erations \`a faire. Sous Linux, aucun driver n'est n\'ecessaire.\\
 Si vous utilisez le firmware original de la K-Team, il vous faudra alors installer pour Windows un driver suppl\'ementaire afin de faire communiquer l'interface graphique avec le contr\^oleur. Pour cela, suivez les instructions fournis dans le manuel de la K-Team.
 
 \begin{center}
@@ -610,7 +635,7 @@ Enfin, ex\'ecuter la commande suivante :\\
 \begin{center}
   \fcolorbox{red}{white}{
     \begin{minipage}{1.0\textwidth}
-      Si AvrDude ne reconna�t pas le contr\^oleur, assurez vous d'avoir positionn\'e le cavalier dans la bonne position. Sinon, la connexion entre le connecteur du c�ble et le kilobot est tr\`es sensible. Il faut que toutes les broches du connecteur soit en contact avec le kilobot. N'h\'esitez surtout pas \`a presser l\'eg\`erement le connecteur contre le kilobot et \`a le placer l\'eg\`erement en biais afin d'assurer la bonne connexion entre le connecteur et le robot.
+      Si AvrDude ne reconnaît pas le contr\^oleur, assurez vous d'avoir positionn\'e le cavalier dans la bonne position. Sinon, la connexion entre le connecteur du câble et le kilobot est tr\`es sensible. Il faut que toutes les broches du connecteur soit en contact avec le kilobot. N'h\'esitez surtout pas \`a presser l\'eg\`erement le connecteur contre le kilobot et \`a le placer l\'eg\`erement en biais afin d'assurer la bonne connexion entre le connecteur et le robot.
     \end{minipage}
   }
 \end{center}
