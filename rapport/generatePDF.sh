@@ -1,7 +1,7 @@
 #!/bin/bash
 
-pdflatex -interaction=nonstopmode specifications.tex
-bibtex specifications
-pdflatex -interaction=nonstopmode specifications.tex
+pdflatex -interaction=nonstopmode rapport.tex
+bibtex rapport
+pdflatex -interaction=nonstopmode rapport.tex
 make clean
-evince specifications.pdf
+evince rapport.pdf
