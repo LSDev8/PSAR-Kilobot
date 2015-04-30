@@ -1,4 +1,5 @@
 \documentclass[a4paper,8pt]{report}
+\setcounter{tocdepth}{3}
 
 \usepackage[utf8]{inputenc}
 \usepackage[latin1]{inputenc}
@@ -241,6 +242,10 @@ L'assemblage des robots est aussi tr\`es simple et rapide (la plus part des comp
 \addcontentsline{toc}{subsection}{Simulation}
 
 Lorsqu'on impl\'emente des algorithmes collectifs, on d\'esire parfois les simuler avant de pouvoir les tester grandeur nature sur les robots (ici les kilobots) afin d'\'eviter les erreurs d'impl\'ementation ou de se retrouver avec un programme qui impl\'emente mal l'algorithme. \\
+
+\subsubsection*{V-Rep}\label{subsubsec:name}
+\addcontentsline{toc}{subsubsection}{V-Rep}
+
 Pour cela, nous avons \`a notre disposition le simulateur V-Rep de la soci\'et\'e Coppelia Robotics qui est un simulateur sp\'ecialis\'e dans le domaine de la robotique. Il impl\'emente des mod\`eles 3d de l'ensemble des robots existants et il int\`egre aussi un cr\'eateur de mod\`ele 3d afin de pouvoir simuler des prototypes. Il dispose aussi d'un moteur physique permettant de v\'erifier la viabilit\'e de certains robots. Il utilise un langage de script (le Lua) pour programmer les robots et ainsi les faire \'evoluer dans l'environnement simul\'e. Il peut aussi \^etre coupl\'e avec de nombreuses interfaces via des API remotes.\\
 
 \medskip
@@ -266,15 +271,34 @@ Le simulateur dispose lors de la simulation de plusieurs vitesse de simulation. 
 \medskip
 Enfin, V-Rep est un simulateur orient\'e m\'ecanique. Il dispose en effet d'un moteur physique et d'un environnement en 3 dimensions pour pouvoir simuler des robots complexes comme des bras robotiques. Nous l'utilisons pour effectuer des simulations d'algorithmes, donc comme un simulateur logique. Il n'est alors pas adapt\'e \`a nos besoins (trop lourd, langage de script trop contraignant, nombreux bug durant la simulation).\\
 
+\subsubsection*{KbSim}\label{subsubsec:name}
+\addcontentsline{toc}{subsubsection}{KbSim}
+
+\medskip
+Nous avons alors cherché un autre simulateur et avons trouvé KbSim, un simulateur entièrement dédié aux kilobots et développé en python en utilisant la librairie pygame.\\
+Bien que n'utilisant pas les mêmes fichiers que les kilobots, sa programmation en python est aisée et permet une implémentation rapide des algorithmes dans le simulateur. Il offre aussi d'autre fonctionnalité comme par exemple l'affichage du rayon d'émission de chaque kilobot. Sa consommation plus faible en ressource et sa plus grande portabilité en font un simulateur plus adapté pour notre tâche que le simulateur V-Rep.\\
+
+\begin{figure}[!h]
+    \centering
+    \subfigure{ \includegraphics[width=14cm]{images/KbSim.png}}
+    \caption{Interface du simulateur KbSim}
+\end{figure}
+
+\newpage
 \subsection*{Firmware}\label{subsec:name}
 \addcontentsline{toc}{subsection}{Firmware}
+
+\subsubsection*{K-Team}\label{subsubsec:name}
+\addcontentsline{toc}{subsubsection}{K-Team}
 
 Les kilobots sont un mod\`ele de robot d\'evelopp\'es par l'universit\'e d'Harvard. L'entreprise suisse K-Team Corporation les proposes \`a la vente et s'occupe de la fabrication et de l'assemblage. Ils fournissent les robots avec leur propre firmware d\'evelopp\'e en interne par la K-Team. \\
 Ce firmware poss\`ede un inconv\'enient : il n'est compatible uniquement sous windows. \\
 En effet, pour que l'op\'erateur puisse charger le programme dans les kilobots, il doit passer par le contr\^oleur qui est l'interface entre l'ordinateur et les robots. Or, le driver du contr\^oleur est uniquement disponible pour Windows et la K-Team ne fournit pas les sources pour un portage sous Linux. \\
 De plus, nous avons rencontr\'es des probl\`emes lors de la calibration des moteurs avec le firmware d'origine. Ce dernier ne permet la calibration uniquement du moteur gauche ou du moteur droit mais pas des deux lorsqu'on souhaite avancer. Or, le positionnement des jambes de chaque kilobot n'\'etant pas parfaitement identique, nous avons besoin de valeurs diff\'erentes pour les deux moteur afin que le robot se d\'eplace en ligne droite.\\
 
-\medskip
+\subsubsection*{Kilobotics}\label{subsubsec:name}
+\addcontentsline{toc}{subsubsection}{Kilobotics}
+
 Apr\`es recherche, nous d\'ecid\^ames d'utiliser le firmware kilobotics. Kilobotics est le nom de la librairie d\'evelopp\'e par l'universit\'e d'Harvard. Il est open-source et est plus r\'ecent et dispose d'un driver pour Linux. De plus, son utilisation limite les risques pour le mat\'erielle. Le contr\^oleur permet de charger les programmes dans les kilobots. Mais pour effectuer cela avec le firmware d'origine de la K-Team, il faut \`a chaque nouveau programme reprogrammer le microcontr\^oleur du contr\^oleur, ce qui implique le risque de se retrouver avec un microcontr\^oleur mal programmer et alors un contr\^oleur potentiellement hs. Le firmware kilobotics n\'ecessite lui de ne le reprogrammer qu'une seule fois, ce qui limite grandement les risques. \\
 En ce qui concerne la calibration, kilobotic permet via l'interface graphique (kilogui) de calibrer chaque moteur s\'epar\'ement mais aussi de leur attribuer des valeurs diff\'erentes pour le d\'eplacement en ligne droite. Kilogui propose aussi la possibilit\'e de rentrer directement les valeurs souhait\'es (entre 1 et 255) pour la puissance des moteurs. Enfin, il est possible d'affecter un identifiant \`a chaque robot qui sera stock\'e dans la m\'emoire EPROM.\\
 
@@ -466,8 +490,6 @@ Le second met en avant la communication entre eux et se nomme firefly. Il réali
 \addcontentsline{toc}{subsection}{Orbite}
 
 L'orbite reprend le principe des satellites naturelles comme la lune qui tourne autour de la terre. Chaque astre prend ici la forme d'un kilobot. Le premier va effectuer une révolution autour du second pendant que ce dernier lui enverra des messages en continu. L'emploi d'un second kilobot est indispensable pour permettre à un autre d'avancer en formant un cercle. Sans point de repère, il est impossible d'en effectuer un correctement, les déplacements par vibrations étant trop imprécis et entraînant des mouvements non désirés. La surface sur lequel évolue le robot rajoute encore un facteur imprévisible.
-
-\subsubsection{Principe de l'algorithme}\label{subsubsec:name}
 
 Un kilobot va rester en position stationnaire et envoyer des messages en continue. Le contenu de ceux-ci est d'aucune importance. Ils ne servent qu'a transmettre la distance qui sépare l’émetteur des récepteurs.\\
 Le second kilobot va lui avancer en continue et recevoir les messages du premier. A chaque réception, il va calculer la distance qui le sépare de l'émetteur et ainsi pouvoir faire des corrections de trajectoire. Il avance ainsi tout droit tant qu'il se trouve dans les bornes définis dans le programme. Si il se trouve à une distance inférieur à celle-ci, il tournera à gauche jusqu’à de nouveau être dans les bornes. Il effectuera la même opérations si il est à une distance supérieur, mais vers la droite.\\
@@ -668,7 +690,7 @@ Les kilobots peuvent être rechargés via le chargeur de la K-Team. Pour cela, p
 \begin{center}
   \fcolorbox{red}{white}{
     \begin{minipage}{1.0\textwidth}
-      Attention, en fonction de la version de kilogui dont vous disposez, il se peut que vous ne disposiez pas du boutton charge. Il existe deux version de kilogui: La version sous format .deb contient la calibration mais pas le mode charge. Il faut récuperer les sources de kilogui et les compilers vous-même.\\
+      Attention, en fonction de la version de kilogui dont vous disposez, il se peut que vous ne disposiez pas du boutton charge. Il existe deux version de kilogui: La version sous format .deb contient la calibration mais pas le mode charge. Il faut donc récuperer les sources de kilogui et les compilers vous-même.\\
       Attention, les sources de kilogui ne contiennent pas la calibration. Il faut donc utiliser les deux versions en fonction de l'action souhaité (calibration ou chargement).
     \end{minipage}
   }
