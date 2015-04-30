@@ -119,7 +119,6 @@ Ces robots se d\'eplacent uniquement par vibration et communiquent par infraroug
     \subfigure{ \includegraphics[width=6cm]{images/kilobotI.jpg}}
     \subfigure{ \includegraphics[width=6cm]{images/kilobotII.jpg}}
     \caption{Robots Kilobot}
-    \label{pandas}
 \end{figure}
 
 \smallskip
@@ -152,7 +151,6 @@ Le projet \textit{\textbf{E-Swarm}}\footnote{http://www.e-swarm.org/research_mai
     \subfigure{ \includegraphics[width=6cm]{images/iSwarm.jpg}}
     \subfigure{ \includegraphics[width=6cm]{images/iSwarmII.jpg}}
     \caption{Robots I-Swarm}
-    \label{pandas}
 \end{figure}
 
 \begin{figure}[!h]
@@ -160,7 +158,6 @@ Le projet \textit{\textbf{E-Swarm}}\footnote{http://www.e-swarm.org/research_mai
     \subfigure{ \includegraphics[width=10cm]{images/eSwarmII.jpg}}
     \subfigure{ \includegraphics[width=10cm]{images/eSwarmIII.jpg}}
     \caption{Robots E-Swarm}
-    \label{pandas}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -329,7 +326,6 @@ Donc notre approche n'est pas viable pour simuler le mod\`ele CORDA sur la plate
     \centering
     \subfigure{ \includegraphics[width=14cm]{images/locate_bounding_box_demo.jpg}}
     \caption{Simulation de la première approche}
-    \label{pandas}
 \end{figure}
 
 %%%%%%%
@@ -615,9 +611,11 @@ Si vous utilisez le firmware original de la K-Team, il vous faudra alors install
 
 Si vous d\'esirez passer au firmware kilobotics, il est n\'ecessaire d'utiliser le logiciel AvrDude. Ce logiciel d\'evelopper par Atmel permet de reprogrammer le microcontr\^oleur du contr\^oleur. Pour cela, connecter le contr\^oleur \`a un ordinateur via un cable usb, ouvrer un terminal et placez-vous dans le r\'epertoire contenant le nouveau firmware (au format .hex) puis assurez-vous que le cavalier du contr\^oleur est bien positionn\'e en mode interne (c'est la position par d\'efaut : c'est \`a dire sur la gauche). \\
 
-\begin{center}
-  \includegraphics[scale=0.7]{images/flashI.png}
-\end{center}
+\begin{figure}[!h]
+    \centering
+    \subfigure{ \includegraphics[width=8cm]{images/flashI.png}}
+    \caption{Cavalier en position interne}
+\end{figure}
 
 Enfin, ex\'ecuter la commande suivante :\\
 
@@ -627,9 +625,11 @@ Enfin, ex\'ecuter la commande suivante :\\
 
 Pour flasher les kilobots, l'op\'eration est tr\`es similaire. Connecter le contr\^oleur, ouvrer un terminal et placez-vous dans le r\'epertoire contenant le nouveau firmware (toujours au format .hex). Placez cette fois-ci le cavalier du contr\^oleur en mode externe (sur la droite): \\
 
-\begin{center}
-\includegraphics[scale=0.5]{images/flashII.png}
-\end{center}
+\begin{figure}[!h]
+    \centering
+    \subfigure{ \includegraphics[width=8cm]{images/flashII.png}}
+    \caption{Cavalier en position externe}
+\end{figure}
 
 Puis connecter le c\^able au contr\^oleur et au kilobot via les 6 trous pr\'esent sur le c\^ot\'e du kilobot.\\
 Enfin, ex\'ecuter la commande suivante :\\
@@ -647,6 +647,7 @@ Enfin, ex\'ecuter la commande suivante :\\
   }
 \end{center}
 
+\newpage
 \subsection*{Chargement des kilobots}\label{sec:name}
 \addcontentsline{toc}{subsection}{Chargement des kilobots}
 
@@ -656,7 +657,6 @@ Les kilobots peuvent être rechargés via le chargeur de la K-Team. Pour cela, p
     \centering
     \subfigure{ \includegraphics[width=16cm]{images/kilobots_charging.jpg}}
     \caption{Kilobots sur le chargeur}
-    \label{pandas}
 \end{figure}
 
 \begin{center}
