@@ -6,7 +6,7 @@ all: bootldr ohc ohc-big ohc-arduino-8mhz ohc-arduino-16mhz blank $(EXEC)
 KILOLIB = build/kilolib.a
 bootldr: build/bootldr.elf build/bootldr.hex build/bootldr.lss
 blank: build/blank.elf build/blank.hex build/blank.lss
-$(EXEC) : build/$(EXEC).elf build/$(EXEC).hex remove #build/$(EXEC).lss
+$(EXEC) : build/$(EXEC).elf build/$(EXEC).hex #build/$(EXEC).lss
 ohc: build/ohc.elf build/ohc.hex build/ohc.lss
 ohc-big: build/ohc-big.elf build/ohc-big.hex build/ohc-big.lss
 ohc-arduino-8mhz: build/ohc-arduino-8mhz.elf build/ohc-arduino-8mhz.hex build/ohc-arduino-8mhz.lss
