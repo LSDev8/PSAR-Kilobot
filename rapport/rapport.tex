@@ -128,7 +128,7 @@ Ces robots se d\'eplacent uniquement par vibration et communiquent par infraroug
 
 \smallskip
 Le projet a pour objectif d'implementer des algorithmes r\'epartis sur un essaim de robots (la plate-forme \textbf{Kilobot}).\\
-Il se d\'ecoupe en trois phases, la prem\`ere consiste en une recherche documentaire et une prise en main de la plate-forme mat\'erielle, la seconde concerne l'impl\'ementation d'algorithmes (dans notre cas de bio-algorithmes). Enfin la derni\`ere phase se concentre sur la recherche des possibilit\'es d'impl\'ementation d'un mod\`ele : le mod\`ele \textbf{CORDA}\footnote{\cite{CORDA} A New Distributed Model to Control and Coordinate a Set of Autonomous Mobile Robots: The Corda Model}.\\
+Il se d\'ecoupe en trois phases, la prem\`ere consiste en une recherche documentaire et une prise en main de la plate-forme mat\'erielle, la seconde concerne l'impl\'ementation d'algorithmes (dans notre cas de bio-algorithmes). Enfin la derni\`ere phase se concentre sur la recherche des possibilit\'es d'impl\'ementation d'un mod\`ele : le \textbf{mod\`ele CORDA}\footnote{Giuseppe Prencipe. A new distributed model to control and coordinate a set of autonomous mobile robots : The corda model, 2000.}.\\
 
 %Le but de ce projet est d'impl\'ementer une \textbf{API} permettant de manipuler des mod\`eles robotiques sur la plate-forme Kilobot. Ces mod\`eles ne sont pas pr\'evus pour la plate-forme Kilobot, notre API devra rendre cette impl\'ementation possible en restant simple et si possible facilement extensible.\\
 
@@ -510,12 +510,14 @@ Fin tant que
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Phase III}
 
-\section*{Objectif}\label{sec:name}
-\addcontentsline{toc}{section}{Objectif}
+\section*{Modèle CORDA}\label{sec:name}
+\addcontentsline{toc}{section}{Modèle CORDA}
 
-Le projet doit permettre de cr\'eer une API simulant un autre type de mod\`ele robotique sur la plate-forme Kilobot.\\
-Ce mod\`ele se nomme : \textbf{mod\`ele CORDA}.\\
-Le mod\`ele CORDA nous impose quelques contraintes, ces contraintes portent sur l'aspect physique des robots, on peut les r\'esumer de la fa\c con suivante : \\
+
+Cette phase vise à rechercher le moyen d'implementer le  \textbf{mod\`ele CORDA}\footnote{Giuseppe Prencipe. A new distributed model to control and coordinate a set of autonomous mobile
+robots : The corda model, 2000.}.\\
+
+Il définis des caractéristique physique dont devront disposer les robots :
 
 \begin{itemize}
 \item chaque robot poss\`ede un rep\`ere orthonorm\'e.
