@@ -311,7 +311,7 @@ En ce qui concerne la calibration, kilobotic permet via l'interface graphique (k
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Phase I}
 
-Ce projet se d\'ecoupe en 3 phases.
+Ce projet se d\'ecoupe en 3 phases :
 
 \begin{enumerate}[{Phase}-1 ]
 \item \textit{\textbf{Recherche Documentaire et Prise en main}}.
@@ -441,16 +441,72 @@ Fin Tant que
 %La seconce version de notre algorithme utilise l'algorithme de gradient afin de garder les kilobots en formation jusqu'\`a la source de lumi\`ere.\\
 %Par exemple les kilobots ont une formation en A, et ils doivent garder cette forme jusqu'\`a la destination.\\
 
+\section*{Gradient}\label{sec:name}
+\addcontentsline{toc}{section}{Gradient}
+
+L'algorithme du gradient permet de calculer sa distance par rapport à une balise fixe.\\
+Chaque kilobots transmet à tous ses voisins la distance qui le sépare de la balise. Ainsi, chaque robot peut calculer sa propre distance par rapport à la balise sans pour autant communiquer directement avec elle. L'ensemble des robots servent de relais pour la balise fixe.\\
+Une fois sa distance calculé, le kilobot allume sa led pour signaler sa position.
+
+\medskip
+\begin{figure}[!h]
+    \centering
+    \subfigure{ \includegraphics[width=10cm]{images/gradient.png}}
+    \caption{Gradient à une balise}
+\end{figure}
+
+\newpage
+\begin{center}
+  \rule{\linewidth}{.5pt}
+  \textbf{Gradient}\\
+  \rule{\linewidth}{.5pt}
+\end{center}
+
+\begin{verbatim}
+var timer
+var gradient_value
+
+Tant que vrai
+     attendre une seconde
+     incrémenter timer
+     Si timer >= 5000 // Actualisation toutes les 5 secondes
+     alors
+          Si kilo_uid == 0 // Si le kilobot a l'id 0.
+          alors
+               gradient_value <- 0
+          Sinon
+               gradient_value <- Valeur maximum
+          Fin si
+          timer <- 0
+     Fin si
+
+     Si nouveau message
+     alors
+          Si gradient_value > valeur_reçue + 1
+          alors
+               gradient_value <- valeur_reçue + 1
+               mettre à jour le message à envoyer.
+               timer <- 0
+          Fin si
+
+          Switch(gradient_value % 3)
+               0 -> allumer led en rouge
+               1 -> allumer led en vert
+               2 -> allumer led en bleu
+          Fin switch
+     Fin si
+Fin tant que
+\end{verbatim}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
-%                           LE PRODUIT                           %
+%                           PHASE III                            %
 %                                                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Phase III}
 
-\section*{Description des attentes}\label{sec:name}
-\addcontentsline{toc}{section}{Description des attentes}
+\section*{Objectif}\label{sec:name}
+\addcontentsline{toc}{section}{Objectif}
 
 Le projet doit permettre de cr\'eer une API simulant un autre type de mod\`ele robotique sur la plate-forme Kilobot.\\
 Ce mod\`ele se nomme : \textbf{mod\`ele CORDA}.\\
@@ -507,7 +563,7 @@ Donc notre approche n'est pas viable pour simuler le mod\`ele CORDA sur la plate
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %        AVEC 5 BALISES               %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \draw[line width=3pt] (0,0) -- (0,\rayon);                % 0 -> A
+    %\draw[line width=3pt] (0,0) -- (0,\rayon);                % 0 -> A
     \draw[red,line width=2pt] (0,\rayon) -- (18:\rayon);      % A -> B
     \draw[red,line width=2pt] (18:\rayon) -- (-54:\rayon);    % B -> C
     \draw[red,line width=2pt] (-54:\rayon) -- (-126:\rayon);  % C -> D
@@ -714,14 +770,29 @@ Pour compiler un programme pour la plate-forme Kilobot, il suffit de changer dan
 \section*{Codes Sources}\label{sec:name}
 \addcontentsline{toc}{section}{Codes Sources}
 
-Code source de la synchronisation "luciole/firefly".\\
+\subsection*{Luciole\Firefly}\label{sec:name}
+\addcontentsline{toc}{subsection}{Luciçole\Firefly}
 \lstinputlisting[language=C]{../src/firefly.c}
 
-Code source de l'orbit master.\\
+\newpage
+\subsection*{Orbit : maitre}\label{sec:name}
+\addcontentsline{toc}{subsection}{Orbit : maitre}
 \lstinputlisting[language=C]{../src/orbit_master.c}
 
-Code source de l'orbit slave.\\
+\newpage
+\subsection*{Orbit : esclave}\label{sec:name}
+\addcontentsline{toc}{subsection}{Orbit : esclave}
 \lstinputlisting[language=C]{../src/orbit_slave.c}
+
+\newpage
+\subsection*{Phototaxis}\label{sec:name}
+\addcontentsline{toc}{subsection}{Phototaxis}
+\lstinputlisting[language=C]{../src/phototaxis.c}
+
+\newpage
+\subsection*{Gradient}\label{sec:name}
+\addcontentsline{toc}{subsection}{Gradient}
+\lstinputlisting[language=C]{../src/gradient.c}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
