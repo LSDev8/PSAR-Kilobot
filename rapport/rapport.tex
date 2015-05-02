@@ -307,7 +307,14 @@ De plus, nous avons rencontr\'es des probl\`emes lors de la calibration des mote
 \addcontentsline{toc}{subsubsection}{Kilobotics}
 
 Apr\`es recherche, nous d\'ecid\^ames d'utiliser le firmware \textit{\textbf{Kilobotics}}\footnote{https://www.kilobotics.com/}. Kilobotics est le nom de la librairie d\'evelopp\'e par l'universit\'e d'Harvard. Il est open-source et est plus r\'ecent et dispose d'un driver pour Linux. De plus, son utilisation limite les risques pour le mat\'erielle. Le contr\^oleur permet de charger les programmes dans les kilobots. Mais pour effectuer cela avec le firmware d'origine de la K-Team, il faut \`a chaque nouveau programme reprogrammer le microcontr\^oleur du contr\^oleur, ce qui implique le risque de se retrouver avec un microcontr\^oleur mal programmer et alors un contr\^oleur potentiellement hs. Le firmware kilobotics n\'ecessite lui de ne le reprogrammer qu'une seule fois, ce qui limite grandement les risques. \\
-En ce qui concerne la calibration, kilobotic permet via l'interface graphique (kilogui) de calibrer chaque moteur s\'epar\'ement mais aussi de leur attribuer des valeurs diff\'erentes pour le d\'eplacement en ligne droite. Kilogui propose aussi la possibilit\'e de rentrer directement les valeurs souhait\'es (entre 1 et 255) pour la puissance des moteurs. Enfin, il est possible d'affecter un identifiant \`a chaque robot qui sera stock\'e dans la m\'emoire EPROM.\\
+En ce qui concerne la calibration, kilobotic permet via l'interface graphique (\textbf{KiloGUI}) de calibrer chaque moteur s\'epar\'ement mais aussi de leur attribuer des valeurs diff\'erentes pour le d\'eplacement en ligne droite. Kilogui propose aussi la possibilit\'e de rentrer directement les valeurs souhait\'es (entre 1 et 255) pour la puissance des moteurs. Enfin, il est possible d'affecter un identifiant \`a chaque robot qui sera stock\'e dans la m\'emoire EPROM.\\
+
+\begin{figure}[!h]
+    \centering
+    \subfigure{ \includegraphics[width=6cm]{images/KiloGUI.png}}
+    \subfigure{ \includegraphics[width=6cm]{images/calib.png}}
+    \caption{Interface de l'application KiloGUI}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
@@ -367,7 +374,7 @@ Les kilobots font de même avec cet algorithme.\\
 Pour permettre possible la synchronisation de plusieurs individus, nous implémentons une horloge logique dans chacun. La synchronisation va se réaliser en collectant les horloges contenus dans les messages des voisins afin de déterminer la moyenne du nombre de tick d'horloge qui sont en avance (ou en retard).\\
 
 Le kilobot dispose donc d'un tableau dont les indexes sont le nombre de tick en retard ou en avance par rapport à ces voisins.\\
-Exemple : Si la différence entre son horloge et l'horloge reçu dans un message est de 8 ticks, alors il incrémentera de 1 la valeur contenu à l'index 8 du tableau.\\
+Exemple : Si la différence entre son horloge et l'horloge reçu dans un message est de 8 ticks, alors il incrémentera de 1 la valeur contenu à l'index 8 du tableau.\\
 Le tableau est ainsi mis à jours à chaque réception d'un message seulement si la différence entre l'horloge de l’émetteur et celle du récepteur est inférieur à la moitié de la période d'horloge. Cette prévention permet d'éviter que deux kilobots voisins se mettent à jour en même temps.\\
 
 A chaque itération de la boucle principale du programme, la moyenne de la somme des ticks enregistrés dans le tableau est effectué (tick\_offset) et celui-ci remis à zéro. La différence entre l'horloge local (kilo\_ticks) et celles reçus est calculé :\\
@@ -456,7 +463,7 @@ Une fois sa distance calculé, le kilobot allume sa led pour signaler sa positio
 \medskip
 \begin{figure}[!h]
     \centering
-    \subfigure{ \includegraphics[width=10cm]{images/gradient.png}}
+    \subfigure{ \includegraphics[width=9cm]{images/gradient.png}}
     \caption{Gradient à une balise}
 \end{figure}
 
@@ -527,7 +534,7 @@ Il définis des caractéristique physique dont devront disposer les robots :
 \end{itemize}
 
 \medskip
-Ces contraintes posent plusieurs probl\`ematiques. En effet la plate-forme Kilobot ne propose aucune des ces contraintes. (cf chapitre pr\'ec\'edent)\\
+Ces contraintes posent plusieurs probl\`ematiques. En effet la plate-forme Kilobot ne propose aucune des ces contraintes. (cf chapitre 2)\\
 Donc comment simuler une vision "infinie" avec la plate-forme Kilobot ? Comment simuler un axe orthonorm\'e ? Comment localiser les robots les uns par rapport aux autres ? Et plus important comment un robot peut se localiser dans l'espace ?\\
 
 %%%%%%%
@@ -646,12 +653,10 @@ La solution serait de proposer une m\'ethode hybride entre ces deux m\'ethodes, 
 Cette solution permettra \`a terme d'agrandir la zone de travail mais aura comme cons\'equence une perte de pr\'ecision.\\
 
 
-\section*{Fonctions de l'API}\label{sec:name}
+\section*{Sp\'ecifications de l'API}\label{sec:name}
 \addcontentsline{toc}{section}{Fonctions de l'API}
 
-L'API devra fonctionner sur tous types de de syst\`emes (\textit{Windows}, \textit{OSX}, \textit{Linux}) et doit \^etre extensible afin de facilit\'e l'ajout de futures fonctionnalit\'ees.\\
-
-La premi\`iere version de l'API ne proposera que les m\'ethodes suivantes :
+Nous proposons l'impl\'ementation d'une API permettant de simuler le mod\`ele CORDA, elle devra comprendre les primitives suivantes :
 
 \begin{description}
 \item[getPosition] qui permet \`a un robot de connaitre sa position.
@@ -659,7 +664,14 @@ La premi\`iere version de l'API ne proposera que les m\'ethodes suivantes :
 \item[toPosition] qui permet \`a un robot de se rendre aux coordonn\'ees en param\`etre.
 \end{description}
 
-%a completer
+\smallskip
+Cette API s'appuiera sur l'API existante de Kilobotics.\\
+
+%\begin{figure}[!h]
+%    \centering
+%    \subfigure{ \includegraphics[width=4cm]{images/API.png}}
+%    \caption{Diagramme de l'API}
+%\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
@@ -777,8 +789,8 @@ Pour compiler un programme pour la plate-forme Kilobot, il suffit de changer dan
 \section*{Codes Sources}\label{sec:name}
 \addcontentsline{toc}{section}{Codes Sources}
 
-\subsection*{Luciole\Firefly}\label{sec:name}
-\addcontentsline{toc}{subsection}{Luciçole\Firefly}
+\subsection*{Luciole/Firefly}\label{sec:name}
+\addcontentsline{toc}{subsection}{Luciole/Firefly}
 \lstinputlisting[language=C]{../src/firefly.c}
 
 \newpage
