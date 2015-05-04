@@ -525,6 +525,16 @@ Fin tant que
 \addcontentsline{toc}{section}{Modèle CORDA}
 
 Cette phase vise \'a rechercher le moyen d'impl\'ementer le \textbf{mod\`ele CORDA}\footnote{Giuseppe Prencipe. A new distributed model to control and coordinate a set of autonomous mobile robots : The corda model, 2000.}.\\
+
+\smallskip
+Comme définis dans l'article \textit{Nettoyage perpétuel de réseaux}, le modèle CORDA est un modèle asynchrone. Chaque entité est autonome et agit par cycles asynchrones.\\
+
+%DEBUT CITE
+
+\textit{"Un cycle est constitu\'e de 3 phases : Voir, Calculer et Agir. Chaque phase est ex\'ecut\'ee de mani\`ere atomique et asynchrone. Une entit\'e a d’abord acc\`es \`a vue, du r\'eseau, comprenant la topologie du r\'eseau et les positions des autres entit\'es dans le r\'eseau \`a un moment donn\'e (Phase Voir). Sur la base de ces informations, l’entit\'e peut effectuer un calcul (Phase Calculer) et en d\'eduire une action : se d\'eplacer ou non sur un sommet voisin (Phase Agir)."}\footnote{L\'elia Blin, Janna Burman, and Nicolas Nisse. Nettoyage perpétuel de réseaux. In Nicolas Matheieu, Fabien et Hanusse, editor, 14`mes Rencontres Francophones sur les Aspects Algorithmiques des Télécommunications (AlgoTel), page 4, La Grande Motte, France, 2012.}\\
+
+%FIN CITE
+
 Nous avons choisi de nous pencher sur ce mod\`ele pr\'ecis car ce mod\`ele est largement utilis\'e pour les algorithmes r\'eparties dans le domaine de la robotique.\\
 
 Il d\'efinit des caract\'eristiques physiques dont devront disposer les robots :
@@ -537,7 +547,7 @@ Il d\'efinit des caract\'eristiques physiques dont devront disposer les robots :
 \end{itemize}
 
 \medskip
-Ces contraintes posent plusieurs probl\`ematiques. En effet la plate-forme Kilobot ne propose aucune de ces contraintes. (cf chapitre 2)\\
+Ces contraintes posent plusieurs probl\`ematiques. En effet la plate-forme Kilobot ne propose aucune de ces caract\'eristiques. (cf chapitre 2)\\
 Donc comment simuler une vision "infinie" avec la plate-forme Kilobot ? Comment simuler un axe orthonorm\'e ? Comment localiser les robots les uns par rapport aux autres ? Et plus important comment un robot peut se localiser dans l'espace ?\\
 
 \section*{Impl\'ementation}\label{sec:name}
@@ -678,11 +688,59 @@ Nous proposons l'impl\'ementation d'une API permettant de simuler le mod\`ele CO
 \smallskip
 Cette API s'appuiera sur l'API existante de Kilobotics.\\
 
-%\begin{figure}[!h]
-%    \centering
-%    \subfigure{ \includegraphics[width=4cm]{images/API.png}}
-%    \caption{Diagramme de l'API}
-%\end{figure}
+\subsection*{getPosition}\label{sec:name}
+\addcontentsline{toc}{subsection}{getPosition}
+
+Cette primitive se basera sur l'algorithme du gradient vu précédemment. Elle permetra de connaître la position du robot par rapport aux balises. En effet, le gradient forme une grille qui est utilisée par les robots pour calculer leur position. En le couplant au "bounding box", nous pouvons obtenir une méthode de localisation demandant moins de balises et augmentant aussi la surface couverte par la grille. De plus, cette technique est compatible avec les limitations matérielles des kilobots au niveau "hardware" (puissance de calcul).
+
+\subsection*{getVision}\label{sec:name}
+\addcontentsline{toc}{subsection}{getVision}
+
+Cette primitive récupère la position de l'ensemble des kilobots voisins pour un kilobot donné. En connaissant les positions des voisins, il sera possible de simuler un cône de vision pour respecter la contrainte du modèle CORDA.
+
+\subsection*{toPosition}\label{sec:name}
+\addcontentsline{toc}{subsection}{toPosition}
+
+Cette dernière primitive réunie les deux précédantes afin de proposer un système de déplacement vers une position donnée pour un ensemble de robots.\\
+
+\bigskip
+\section*{Avancement du projet}\label{sec:name}
+\addcontentsline{toc}{section}{Avancement du projet}
+
+Durant ces 4 mois durant lesquels nous avons travaillé sur le projet, nous avons pu réaliser les deux premières phases demandées. Au vue de notre avancement dans le projet, ils nous fût proposés de commencer une troisième phases orientée recherche et qui est toujours en cours. En effet, nous avons réalisé un travail de recherche sur les différentes possiblités pour implémenter le modèle CORDA. Au jour de la rédaction de ce rapport, seule la primitive getPosition est en cours d'implémentation. Elle devrait être disponible ultérieurement sur le github du projet\footnote{https://github.com/LSDev8/PSAR-Kilobot}.\\
+
+\smallskip
+La dernière phase de ce projet a aussi été l'occasion pour nous d'avoir un bref aperçu du monde de la recherche.
+Nous fûment confrontés aux al\'eas du chercheur, \`a savoir une grande recherche bibliographique et \`a la contrari\'et\'e de voir de nombreuses pistes devenir infructeuses.\\
+
+%                            __
+%                          .'`  `.      __
+%                         /      |  ,-'`  `'.
+%                        ;       '-'         )
+%                        |              _,.-'
+%                    _   |_.--.,       (_
+%                 .'` `'-'__    \        ''"'-.
+%                /  .-"-/`  `\   ;_            \
+%                | /   ;      ;  | `.   (`'.__.'
+%                 |   o| o    | __   \   `.
+%           _,.---'\___.\.__.'    `'. |_   )
+%       _.-'               _.-""-.   '-.'-'
+%     ,'                     |   \`.    `.
+%    /                       ;   |       |
+%   (_.-'""''---..           /   |      /
+%                 `'-..___.-'    ;  ,.-'
+%                       \ 7      ' / |
+%                       |/_  _  ; /  '
+%                   .-  /' /` j/ '   |
+%                   | \|  '   /  |
+%                   '  `.___.'  ;     '
+%                   ;          /      |
+%                    \        /       |
+%                     `.,__,.'         '
+%                        |             |
+%                        ;              '
+%                       /                |
+%                      ' ___________ ...-'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %
@@ -775,6 +833,7 @@ Les kilobots peuvent être recharg\'es via le chargeur de la K-Team. Pour cela, 
     \subfigure{ \includegraphics[width=16cm]{images/kilobots_charging.jpg}}
     \caption{Kilobots sur le chargeur}
 \end{figure}
+
 
 \begin{center}
   \fcolorbox{red}{white}{
