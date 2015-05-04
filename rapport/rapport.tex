@@ -789,6 +789,30 @@ Pour compiler un programme pour la plate-forme Kilobot, il suffit de changer dan
   }
 \end{center}
 
+\subsection*{Calibration des kilobots}\label{sec:name}
+\addcontentsline{toc}{subsection}{Calibration des kilobots}
+
+Les kilobots se déplacant par vibration, il est primordiale de les calibrer. En effet, chaque exemplaire possède des pattes avec un angle différents. Il faut donc les calibrer individuellement.
+Pour calibrer un robot, allumer le puis positionner le en dessous du contrôleur. Vérifier que vous utilisé bien la version de kilogui disposant du module de calibration (la 64 bits).\\
+Cliquer sur le bouton de calibration, vous obtenez la fenêtre suivante :
+
+\begin{figure}[!h]
+    \centering
+    \subfigure{ \includegraphics[width=10cm]{images/calib.png}}
+    \caption{Interface de calibration de KiloGUI}
+\end{figure}
+
+Elle comporte 5 champs :
+
+\begin{description}
+\item[Unique ID] : permet d'associer à chaque kilobot un identifiant.
+\item[Turn Left] : permet de définir la puissance de vibration utilisé par le kilobot pour tourner à gauche. Ce sera la valeur utilisé par la constante kilo\_turn\_left. Une puissance entre 60 et 90 est généralement suffisante pour obtenir une bonne rotation. Cliquer sur Test pour tester la nouvelle valeur.
+\item[Turn Right] : idem que Turn Right. Attention : il a de grande chance qu'il faille utiliser une valeur différente que celle utilisé pour Turn Left.
+\item[Go Straight] : Valeur utilisé par le kilobot lorsqu'il désire avancer en ligne droite. Chaque valeur correspond à un moteur de vibration. Une fois encore, il est fort probable que les valeurs requises soient différentes des valeurs précédentes.
+\end{description}
+
+Une fois la calibration terminée, cliquer sur Save pour enregistrer les nouvelles valeurs dans la mémoire du kilobot.
+
 \newpage
 \section*{Codes Sources}\label{sec:name}
 \addcontentsline{toc}{section}{Codes Sources}
