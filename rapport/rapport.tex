@@ -524,8 +524,7 @@ Fin tant que
 \section*{Modèle CORDA}\label{sec:name}
 \addcontentsline{toc}{section}{Modèle CORDA}
 
-Cette phase vise à rechercher le moyen d'impl\'ementer le  \textbf{mod\`ele CORDA}\footnote{Giuseppe Prencipe. A new distributed model to control and coordinate a set of autonomous mobile
-robots : The corda model, 2000.}.\\
+Cette phase vise \'a rechercher le moyen d'impl\'ementer le \textbf{mod\`ele CORDA}\footnote{Giuseppe Prencipe. A new distributed model to control and coordinate a set of autonomous mobile robots : The corda model, 2000.}.\\
 Nous avons choisi de nous pencher sur ce mod\`ele pr\'ecis car ce mod\`ele est largement utilis\'e pour les algorithmes r\'eparties dans le domaine de la robotique.\\
 
 Il d\'efinit des caract\'eristiques physiques dont devront disposer les robots :
@@ -540,10 +539,6 @@ Il d\'efinit des caract\'eristiques physiques dont devront disposer les robots :
 \medskip
 Ces contraintes posent plusieurs probl\`ematiques. En effet la plate-forme Kilobot ne propose aucune de ces contraintes. (cf chapitre 2)\\
 Donc comment simuler une vision "infinie" avec la plate-forme Kilobot ? Comment simuler un axe orthonorm\'e ? Comment localiser les robots les uns par rapport aux autres ? Et plus important comment un robot peut se localiser dans l'espace ?\\
-
-%%%%%%%
-% IMAGES du modele theorique.
-%%%%%%%
 
 \section*{Impl\'ementation}\label{sec:name}
 \addcontentsline{toc}{section}{Impl\'ementation}
@@ -642,6 +637,7 @@ Donc notre approche n'est pas viable pour simuler le mod\`ele CORDA sur la plate
   \label{figureI}
 \end{figure}
 
+\newpage
 \subsection*{Seconde Approche}\label{sec:name}
 \addcontentsline{toc}{subsection}{Seconde Approche}
 
@@ -649,8 +645,19 @@ La premi\`ere approche r\'esolvait le probl\`eme de localisation et de positionn
 Donc notre deuxi\`eme approche devra, elle aussi, r\'esoudre le probl\`eme de localisation et de positionnement mais devra, par contre, agrandir la zone de travail des robots (par exemple de permettre \`a 6 robots ou plus d'\^etre dans la zone de travail sans se g\^ener).\\
 
 \medskip
-Nous pouvons utiliser la m\'ethode dite de "bounding box" mais cette m\'ethode augmenterait le nombre de balises par rapport au nombre de robots utiles de mani\`ere trop importante (du faite de la faible distance de communication des Kilobots).\\
-Nous pouvons utiliser la m\'ethode de multilat\'eration qui ne demande que trois balises et ne demande pas une connectivit\'e directe avec les balises (la distance est estim\'ee gr\^ace \`a la propagation d'un gradient) mais cette m\'ethode pose le probl\`eme de la puissance de calcul, en effet la plate-forme Kilobot offre une puissance de calcul limit\'ee ne permettant pas d'impl\'ementer cette m\'ethode.\\
+Nous pouvons utiliser la m\'ethode dite de \textbf{"bounding box"}\footnote{Thomas Moinel. Coordination d’un essaim de robots mobiles (30 kilobots) par des m\'́ecanismes inspir\'́es de l’intelligence collective observ\'́ee chez les animaux sociaux. 2012}.\\
+La m\'ethode par "bounding box" consiste \`a calculer la position, ici d'un robot, par l'intersection des zones des balises.
+
+\begin{figure}[!h]
+    \centering
+    \subfigure{ \includegraphics[width=8cm]{images/bounding.png}}
+    \caption{Exemple de "bounding box", le centre de l’intersection est utilis\'e comme position estim\'ee}
+\end{figure}
+
+Cette m\'ethode augmenterait le nombre de balises par rapport au nombre de robots utiles de mani\`ere trop importante (du faite de la faible distance de communication des Kilobots).\\
+Nous pouvons utiliser la \textbf{m\'ethode de multilat\'eration}.\\
+La multilat\'eration est une technique de positionnement ayant recours \`a des balises fixes dont les positions sont connues. Elle se base sur les diff\'erences de distance entre deux balises lorsqu'elles emettent des messages \`a intervalles r\'eguliers\footnote{http://en.wikipedia.org/wiki/Multilateration}.\\
+Cette m\'ethode ne demande que trois balises et aucune connectivit\'e directe avec les balises (la distance est estim\'ee gr\^ace \`a la propagation d'un gradient) mais cette m\'ethode pose le probl\`eme de la puissance de calcul, en effet la plate-forme Kilobot offre une puissance de calcul limit\'ee ne permettant pas d'impl\'ementer cette m\'ethode.\\
 
 \smallskip
 La solution serait de proposer une m\'ethode hybride entre ces deux m\'ethodes, soit la m\'ethode de "bounding box" avec la distance estim\'ee avec un gradient.\\
@@ -700,7 +707,7 @@ Nous utilisions (au d\'ebut du projet) pour nos simulations le logiciel \textit{
 \section*{Tutoriels}\label{sec:name}
 \addcontentsline{toc}{section}{Tutoriels}
 
-Au cours de notre projet, nous avons été confrontés à divers problèmes. Nous avons décidé de les réunir sous forme de tutoriels afin d'en faire profiter ultérieurement toutes personnes qui s'y retrouverait confrontés.
+Au cours de notre projet, nous avons été confrontés à divers problèmes. Nous avons décidé de réunir les probl\`emes les plus r\'ecurrent sous forme de tutoriels afin d'en faire profiter ultérieurement toutes personnes qui s'y retrouverait confrontés.
 
 \subsection*{Installation du contr\^oleur}\label{sec:name}
 \addcontentsline{toc}{subsection}{Installation du contr\^oleur}
@@ -794,7 +801,7 @@ Pour compiler un programme pour la plate-forme Kilobot, il suffit de changer dan
 \subsection*{Calibration des kilobots}\label{sec:name}
 \addcontentsline{toc}{subsection}{Calibration des kilobots}
 
-Les kilobots se déplacant par vibration, il est primordiale de les calibrer. En effet, chaque exemplaire possède des pattes avec un angle différents. Il faut donc les calibrer individuellement.
+Les kilobots se déplaçant par vibration, il est primordial de les calibrer. En effet, chaque exemplaire possède des pattes avec un angle différents. Il faut donc les calibrer individuellement.
 Pour calibrer un robot, allumer le puis positionner le en dessous du contrôleur. Vérifier que vous utilisé bien la version de kilogui disposant du module de calibration (la 64 bits).\\
 Cliquer sur le bouton de calibration, vous obtenez la fenêtre suivante :
 
